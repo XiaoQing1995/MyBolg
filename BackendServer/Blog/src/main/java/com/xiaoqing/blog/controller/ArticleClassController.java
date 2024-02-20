@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoqing.blog.model.articleclass.ArticleClass;
-import com.xiaoqing.blog.model.articleclass.ArticleClassService;
+import com.xiaoqing.blog.model.articleclass.IArticleService;
 
 @RestController
 public class ArticleClassController {
 	@Autowired
-	ArticleClassService articleClassService;
+	IArticleService articleClassService;
 
 	// 取得所有文章種類
 	@GetMapping("/articleclasses")
@@ -43,7 +43,7 @@ public class ArticleClassController {
 	}
 
 
-	// 新增文章種類
+	// 新建文章種類
 	@PostMapping("/articleclasses")
 	public ResponseEntity<?> createsArticleClasses(@RequestBody ArticleClass articleClass) {
 		if (articleClassService.createsArticleClasses(articleClass)) {

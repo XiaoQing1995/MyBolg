@@ -6,10 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ArticleService {
+public class ArticleService implements IAccountArticleService {
 	@Autowired
 	ArticleDao articleDao;
 	
+	// 新建文章
+	@Override
 	public boolean createsArticle(Article article) {
 		try {
 			articleDao.save(article);

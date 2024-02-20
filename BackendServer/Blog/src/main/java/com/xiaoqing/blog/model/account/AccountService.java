@@ -7,11 +7,12 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class AccountService {
+public class AccountService implements IAccountService {
 	@Autowired
 	AccountDao accountDao;
 
 	// 新建帳戶
+	@Override
 	public boolean createsAccount(Account account) {
 		try {
 			accountDao.save(account);

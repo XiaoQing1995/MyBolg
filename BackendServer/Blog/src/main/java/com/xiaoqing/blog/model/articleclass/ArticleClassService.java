@@ -12,16 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ArticleClassService {
+public class ArticleClassService implements IArticleService {
 	@Autowired
 	ArticleClassDao articleClassDao;
 	
 	// 取得所有文章種類
+	@Override
 	public Page<ArticleClass> getArticleClasses (Pageable pageable) {
 		return articleClassDao.findAll(pageable);
 	}
 	
 	// 取得文章種類
+	@Override
 	public ArticleClass getArticleClass (int id) {
 		Optional<ArticleClass> optionalArticleClass = articleClassDao.findById(id);
 		if (optionalArticleClass.isPresent()) {
@@ -31,7 +33,8 @@ public class ArticleClassService {
 		}
 	}
 	
-	// 新增文章種類
+	// 新建文章種類
+	@Override
 	public boolean createsArticleClasses (ArticleClass articleClass) {
 		try {
 			articleClassDao.save(articleClass);
@@ -42,6 +45,7 @@ public class ArticleClassService {
 	}
 	
 	// 更新文章種類
+	@Override
 	public boolean updatesArticleClasses (ArticleClass articleClass) {
 		try {
 			articleClassDao.save(articleClass);
@@ -52,6 +56,7 @@ public class ArticleClassService {
 	}
 	
 	// 刪除文章種類
+	@Override
 	public void deletesArticleClasses (int id) {
 		articleClassDao.deleteById(id);	
 	}

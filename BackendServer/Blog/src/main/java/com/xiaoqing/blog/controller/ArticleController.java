@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoqing.blog.model.article.Article;
-import com.xiaoqing.blog.model.article.ArticleService;
+import com.xiaoqing.blog.model.article.IAccountArticleService;
 
 @RestController
 public class ArticleController {
 	@Autowired
-	ArticleService articleService;
+	IAccountArticleService articleService;
 	
 	// 新建文章
 	@PostMapping("/articles")
