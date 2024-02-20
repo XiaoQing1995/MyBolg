@@ -23,4 +23,6 @@ public class ArticleController {
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
+	
+	
 }

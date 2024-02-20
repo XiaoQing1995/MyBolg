@@ -1,5 +1,7 @@
 package com.xiaoqing.blog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,17 +27,15 @@ public class ArticleClassController {
 
 	// 取得所有文章種類
 	@GetMapping("/articleclasses")
-	public ResponseEntity<Page<ArticleClass>> getArticleClassPage(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<ArticleClass> articleClassPage = articleClassService.getArticleClasses(pageable);
-		return new ResponseEntity<>(articleClassPage, HttpStatus.OK);
+	public ResponseEntity<?> getArticleClass() {
+		List<ArticleClass> articleClass = articleClassService.getArticleClasses();
+		return new ResponseEntity<>(articleClass, HttpStatus.OK);
 	}
 	
-	// 取得文章種類
+	// 取得文章種類 ById
 	@GetMapping("/articleclasses/{id}")
 	public ResponseEntity<?> getArticleClasses (@PathVariable("id") int id) {
-		ArticleClass articleClass = articleClassService.getArticleClass(id);
+		ArticleClass articleClass = articleClassService.getArticleClassById(id);
 		if (articleClass != null) {
 			return new ResponseEntity<>(articleClass, HttpStatus.OK);
 		}
@@ -66,7 +66,7 @@ public class ArticleClassController {
 	@DeleteMapping("/articleclasses/{id}")
 	public ResponseEntity<?> deletesArticleClasses(@PathVariable("id") int id) {
 		try {
-			articleClassService.deletesArticleClasses(id);
+			articleClassService.deletesArticleClassesById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
