@@ -19,18 +19,18 @@ public class Article {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer article_id;
+	private Integer articleId;
 	
-	private String article_title;
-	private String article_content;
-	private String article_date;
-	private byte[] article_img;
+	private String articleTitle;
+	private String articleContent;
+	private String articleDate;
+	private byte[] articleImg;
 	
 //	@Column(name = "articleclass_id")
 //	private int articleclass_id;
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "articleclass_id",insertable = false,updatable = false)
+	@JoinColumn(name = "articleclassid")
 	private ArticleClass articleClass;
 }

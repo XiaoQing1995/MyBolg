@@ -20,7 +20,7 @@ public class ArticleClass {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer articleclass_id;
+	private Integer articleClassId;
 	
-	private String articleclass_name;
+	private String articleClassName;
 }

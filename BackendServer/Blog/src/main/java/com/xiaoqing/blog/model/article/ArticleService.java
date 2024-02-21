@@ -40,11 +40,11 @@ public class ArticleService implements IArticleService {
 	// 取得所有文章Dto By ArticleClassId Pageable，根據文章種類的ID及分頁信息返回文章Dto的分頁結果
 	@Override
 	public Page<ArticleDto> getArticlesByArticleClassId (int id, Pageable pageable) {
-//		Page<Article> articlesPage = articleDao.findByArticleClass_Id(id, pageable);
-//		List<ArticleDto> articleDtos = articlesPage.getContent().stream().map(this::convertToDto)
-//				.collect(Collectors.toList());
-//		return new PageImpl<>(articleDtos, pageable, articlesPage.getTotalElements());
-		return null;
+		Page<Article> articlesPage = articleDao.findByArticleClass_ArticleClassId(id, pageable);
+		List<ArticleDto> articleDtos = articlesPage.getContent().stream().map(this::convertToDto)
+				.collect(Collectors.toList());
+		return new PageImpl<>(articleDtos, pageable, articlesPage.getTotalElements());
+//		return null;
 	}
 
 	// 新建文章
@@ -69,10 +69,11 @@ public class ArticleService implements IArticleService {
 	// 將Article轉為ArticleDto (沒有文章內容、文章種類)
 	private ArticleDto convertToDto(Article article) {
 		ArticleDto articleDto = new ArticleDto();
-		articleDto.setArticle_id(article.getArticle_id());
-		articleDto.setArticle_title(article.getArticle_title());
-		articleDto.setArticle_date(article.getArticle_date());
-		articleDto.setArticle_img(article.getArticle_img());
+		articleDto.setArticleId(article.getArticleId());
+		articleDto.setArticleTitle(article.getArticleTitle());
+		articleDto.setArticleDate(article.getArticleDate());
+		articleDto.setArticleImg(article.getArticleImg());
+		articleDto.setArticleClass(article.getArticleClass());
 		return articleDto;
 	}
 }

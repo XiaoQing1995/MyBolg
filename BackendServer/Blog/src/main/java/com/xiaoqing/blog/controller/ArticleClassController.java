@@ -27,7 +27,7 @@ public class ArticleClassController {
 
 	// 取得所有文章種類
 	@GetMapping("/articleclasses")
-	public ResponseEntity<?> getArticleClass() {
+	public ResponseEntity<?> getArticleClasses() {
 		List<ArticleClass> articleClass = articleClassService.getArticleClasses();
 		return new ResponseEntity<>(articleClass, HttpStatus.OK);
 	}
