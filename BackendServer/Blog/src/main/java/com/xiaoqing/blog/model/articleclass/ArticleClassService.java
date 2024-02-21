@@ -39,9 +39,7 @@ public class ArticleClassService implements IArticleClassService {
 	// 更新文章種類
 	@Override
 	public void updatesArticleClasses(ArticleClass articleClass) {
-
 		articleClassDao.save(articleClass);
-
 	}
 
 	// 刪除文章種類 ById，依照文章種類ID刪除文章

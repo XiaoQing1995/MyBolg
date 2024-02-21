@@ -11,9 +11,9 @@ public class AccountEntityTest {
 	@Test
 	public void whenSetAccountId_ThenGetAccountId() {
 		Account account = new Account();
-		account.setAccount_id(1);
+		account.setAccountId(1);
 		Integer expected = 1;
-		Integer actual = account.getAccount_id();
+		Integer actual = account.getAccountId();
 		
 		assertEquals(expected, actual);
 	}
@@ -21,9 +21,9 @@ public class AccountEntityTest {
 	@Test
 	public void whenSetAccountNumber_ThenGetAccountNumber() {
 		Account account = new Account();
-		account.setAccount_number("test1");
+		account.setAccountNumber("test1");
 		String expected = "test1";
-		String actual = account.getAccount_number();
+		String actual = account.getAccountNumber();
 		
 		assertEquals(expected, actual);
 	}
@@ -31,9 +31,9 @@ public class AccountEntityTest {
 	@Test
 	public void whenSetAccountPassword_ThenGetAccountPassword() {
 		Account account = new Account();
-		account.setAccount_password("test2");
+		account.setAccountPassword("test2");
 		String expected = "test2";
-		String actual = account.getAccount_password();
+		String actual = account.getAccountPassword();
 		
 		assertEquals(expected, actual);
 	}

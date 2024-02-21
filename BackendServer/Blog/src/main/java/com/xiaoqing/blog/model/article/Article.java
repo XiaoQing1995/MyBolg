@@ -31,6 +31,6 @@ public class Article {
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "articleclassid")
+	@JoinColumn(name = "articleClassId")
 	private ArticleClass articleClass;
 }

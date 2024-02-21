@@ -17,13 +17,17 @@ public class ArticleService implements IArticleService {
 	@Autowired
 	ArticleDao articleDao;
 
-	// 取得所有文章Dto By Pageable，根據分頁信息返回文章Dto的分頁結果
+	// 新建文章
+	@Override
+	public void createsArticle(Article article) {
+		articleDao.save(article);
+	}
+
+	// 取得所有文章Dto By Pageable，根據分頁信息返回文章並轉為Dto
 	@Override
 	public Page<ArticleDto> getArticleDtos(Pageable pageable) {
-		Page<Article> articlesPage = articleDao.findAll(pageable);
-		List<ArticleDto> articleDtos = articlesPage.getContent().stream().map(this::convertToDto)
-				.collect(Collectors.toList());
-		return new PageImpl<>(articleDtos, pageable, articlesPage.getTotalElements());
+		Page<ArticleDto> articlesDtos = articleDao.findAll(pageable).map(this::convertToDto);
+		return articlesDtos;
 	}
 
 	// 取得文章 By Id，依照文章ID返回文章
@@ -36,34 +40,26 @@ public class ArticleService implements IArticleService {
 		return null;
 
 	}
-	
+
 	// 取得所有文章Dto By ArticleClassId Pageable，根據文章種類的ID及分頁信息返回文章Dto的分頁結果
 	@Override
-	public Page<ArticleDto> getArticlesByArticleClassId (int id, Pageable pageable) {
-		Page<Article> articlesPage = articleDao.findByArticleClass_ArticleClassId(id, pageable);
-		List<ArticleDto> articleDtos = articlesPage.getContent().stream().map(this::convertToDto)
-				.collect(Collectors.toList());
-		return new PageImpl<>(articleDtos, pageable, articlesPage.getTotalElements());
-//		return null;
-	}
-
-	// 新建文章
-	@Override
-	public boolean createsArticle(Article article) {
-		try {
-			articleDao.save(article);
-			return true;
-		} catch (Exception e) {
-			// TODO: handle exception
-			return false;
-		}
+	public Page<ArticleDto> getArticlesByArticleClassId(int id, Pageable pageable) {
+		Page<ArticleDto> articlesDtos = articleDao.findByArticleClass_ArticleClassId(id, pageable)
+				.map(this::convertToDto);
+		return articlesDtos;
 	}
 	
+	// 更新文章
+	@Override
+	public void updatesArticles (Article article) {
+		articleDao.save(article);
+	}
+
 	// 刪除文章 By Id，依照文章ID刪除文章
 	@Override
-	public void deletesArticlesById (int id) {
+	public void deletesArticlesById(int id) {
 		articleDao.deleteById(id);
-		
+
 	}
 
 	// 將Article轉為ArticleDto (沒有文章內容、文章種類)

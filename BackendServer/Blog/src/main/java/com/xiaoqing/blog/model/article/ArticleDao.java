@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleDao extends JpaRepository<Article, Integer> {
-	// 取得文章 ByArticleClass_Id,Pageable
-//	Page<Article> findByArticleClass_Id (int id, Pageable pageable);
+	// 取得文章 By ArticleClass 的 ArticleClass_Id,Pageable
+	Page<Article> findByArticleClass_ArticleClassId (int articleClassId, Pageable pageable);
 }
