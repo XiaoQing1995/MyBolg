@@ -3,7 +3,7 @@ package com.xiaoqing.blog.model.article;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface IAccountArticleService {
+public interface IArticleService {
 
 	// 新建文章
 	boolean createsArticle(Article article);

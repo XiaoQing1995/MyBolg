@@ -26,8 +26,8 @@ public class Article {
 	private String article_date;
 	private byte[] article_img;
 	
-	@Column(name = "articleclass_id")
-	private int articleclass_id;
+//	@Column(name = "articleclass_id")
+//	private int articleclass_id;
 	
 	
 	@ManyToOne

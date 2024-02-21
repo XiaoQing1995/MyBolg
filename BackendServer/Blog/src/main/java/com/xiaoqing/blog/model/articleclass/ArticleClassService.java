@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ArticleClassService implements IArticleService {
+public class ArticleClassService implements IArticleClassService {
 	@Autowired
 	ArticleClassDao articleClassDao;
 
@@ -32,24 +32,16 @@ public class ArticleClassService implements IArticleService {
 
 	// 新建文章種類
 	@Override
-	public boolean createsArticleClasses(ArticleClass articleClass) {
-		try {
-			articleClassDao.save(articleClass);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public void createsArticleClasses(ArticleClass articleClass) {
+		articleClassDao.save(articleClass);
 	}
 
 	// 更新文章種類
 	@Override
-	public boolean updatesArticleClasses(ArticleClass articleClass) {
-		try {
-			articleClassDao.save(articleClass);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public void updatesArticleClasses(ArticleClass articleClass) {
+
+		articleClassDao.save(articleClass);
+
 	}
 
 	// 刪除文章種類 ById，依照文章種類ID刪除文章

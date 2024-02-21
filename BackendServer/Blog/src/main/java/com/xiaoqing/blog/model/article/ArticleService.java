@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ArticleService implements IAccountArticleService {
+public class ArticleService implements IArticleService {
 	@Autowired
 	ArticleDao articleDao;
 
@@ -40,10 +40,11 @@ public class ArticleService implements IAccountArticleService {
 	// 取得所有文章Dto By ArticleClassId Pageable，根據文章種類的ID及分頁信息返回文章Dto的分頁結果
 	@Override
 	public Page<ArticleDto> getArticlesByArticleClassId (int id, Pageable pageable) {
-		Page<Article> articlesPage = articleDao.findByArticleClass_ID(id, pageable);
-		List<ArticleDto> articleDtos = articlesPage.getContent().stream().map(this::convertToDto)
-				.collect(Collectors.toList());
-		return new PageImpl<>(articleDtos, pageable, articlesPage.getTotalElements());
+//		Page<Article> articlesPage = articleDao.findByArticleClass_Id(id, pageable);
+//		List<ArticleDto> articleDtos = articlesPage.getContent().stream().map(this::convertToDto)
+//				.collect(Collectors.toList());
+//		return new PageImpl<>(articleDtos, pageable, articlesPage.getTotalElements());
+		return null;
 	}
 
 	// 新建文章

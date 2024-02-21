@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoqing.blog.model.articleclass.ArticleClass;
-import com.xiaoqing.blog.model.articleclass.IArticleService;
+import com.xiaoqing.blog.model.articleclass.IArticleClassService;
 
 @RestController
 public class ArticleClassController {
 	@Autowired
-	IArticleService articleClassService;
+	IArticleClassService articleClassService;
 
 	// 取得所有文章種類
 	@GetMapping("/articleclasses")
@@ -31,10 +31,10 @@ public class ArticleClassController {
 		List<ArticleClass> articleClass = articleClassService.getArticleClasses();
 		return new ResponseEntity<>(articleClass, HttpStatus.OK);
 	}
-	
-	// 取得文章種類 ById
+
+	// 取得文章種類 By id，依照文章種類ID返回文章種類
 	@GetMapping("/articleclasses/{id}")
-	public ResponseEntity<?> getArticleClasses (@PathVariable("id") int id) {
+	public ResponseEntity<?> getArticleClasses(@PathVariable("id") int id) {
 		ArticleClass articleClass = articleClassService.getArticleClassById(id);
 		if (articleClass != null) {
 			return new ResponseEntity<>(articleClass, HttpStatus.OK);
@@ -42,34 +42,38 @@ public class ArticleClassController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-
 	// 新建文章種類
 	@PostMapping("/articleclasses")
 	public ResponseEntity<?> createsArticleClasses(@RequestBody ArticleClass articleClass) {
-		if (articleClassService.createsArticleClasses(articleClass)) {
+		try {
+			articleClassService.createsArticleClasses(articleClass);
 			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	// 更新文章種類
 	@PutMapping("/articleclasses")
 	public ResponseEntity<?> updatesArticleClasses(@RequestBody ArticleClass articleClass) {
-		System.out.println("test");
-		if (articleClassService.updatesArticleClasses(articleClass)) {
+		try {
+			articleClassService.updatesArticleClasses(articleClass);
 			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
 	}
 
-	// 刪除文章種類
+	// 刪除文章種類 ById，依照文章種類ID刪除文章
 	@DeleteMapping("/articleclasses/{id}")
 	public ResponseEntity<?> deletesArticleClasses(@PathVariable("id") int id) {
 		try {
 			articleClassService.deletesArticleClassesById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 	}

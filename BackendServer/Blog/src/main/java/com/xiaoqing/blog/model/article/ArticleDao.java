@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleDao extends JpaRepository<Article, Integer> {
 	// 取得文章 ByArticleClass_Id,Pageable
-	Page<Article> findByArticleClass_ID (int id, Pageable pageable);
+//	Page<Article> findByArticleClass_Id (int id, Pageable pageable);
 }
