@@ -14,26 +14,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoqing.blog.model.articleclass.ArticleClass;
 import com.xiaoqing.blog.model.articleclass.IArticleClassService;
+import com.xiaoqing.blog.model.authentication.AuthenticationService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/articleclasses")
 public class ArticleClassController {
-	@Autowired
-	IArticleClassService articleClassService;
+	
+	private final IArticleClassService articleClassService;
 
 	// 取得所有文章種類
-	@GetMapping("/articleclasses")
+	@GetMapping
 	public ResponseEntity<?> getArticleClasses() {
 		List<ArticleClass> articleClass = articleClassService.getArticleClasses();
 		return new ResponseEntity<>(articleClass, HttpStatus.OK);
 	}
 
 	// 取得文章種類 By id，依照文章種類ID返回文章種類
-	@GetMapping("/articleclasses/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getArticleClasses(@PathVariable("id") int id) {
 		ArticleClass articleClass = articleClassService.getArticleClassById(id);
 		if (articleClass != null) {
@@ -43,7 +49,7 @@ public class ArticleClassController {
 	}
 
 	// 新建文章種類
-	@PostMapping("/articleclasses")
+	@PostMapping
 	public ResponseEntity<?> createsArticleClasses(@RequestBody ArticleClass articleClass) {
 		try {
 			articleClassService.createsArticleClasses(articleClass);
@@ -54,7 +60,7 @@ public class ArticleClassController {
 	}
 
 	// 更新文章種類
-	@PutMapping("/articleclasses")
+	@PutMapping
 	public ResponseEntity<?> updatesArticleClasses(@RequestBody ArticleClass articleClass) {
 		try {
 			articleClassService.updatesArticleClasses(articleClass);
@@ -67,7 +73,7 @@ public class ArticleClassController {
 	}
 
 	// 刪除文章種類 ById，依照文章種類ID刪除文章
-	@DeleteMapping("/articleclasses/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deletesArticleClasses(@PathVariable("id") int id) {
 		try {
 			articleClassService.deletesArticleClassesById(id);

@@ -1,7 +1,8 @@
 use MyBlog;
 
 create Table Account (
-	account_id int not null primary key identity(1,1),
-	account_number varchar(30) not null,
-	account_password varchar(30) not null,
+	accountId int not null primary key identity(1,1),
+	accountNumber varchar(30) not null,
+	accountPassword varchar(MAX) not null,
+	role varchar(30) not null,
 	);
