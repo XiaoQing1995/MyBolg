@@ -2,7 +2,7 @@ use MyBlog;
 
 create Table Account (
 	accountId int not null primary key identity(1,1),
-	accountNumber varchar(30) not null,
+	accountNumber varchar(30) not null UNIQUE,
 	accountPassword varchar(MAX) not null,
 	role varchar(30) not null,
 	);

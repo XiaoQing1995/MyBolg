@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,14 +32,16 @@ import lombok.experimental.PackagePrivate;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/articles")
+@CrossOrigin("http://localhost:5173")
 public class ArticleController {
 
 	private final IArticleService articleService;
 
 	// 新建文章
-	@PostMapping("/articles")
+	@PostMapping
 	public ResponseEntity<?> createsArticle(@RequestBody Article article) {
 		try {
+			System.out.println(article.toString());
 			articleService.createsArticle(article);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
@@ -74,7 +77,7 @@ public class ArticleController {
 		return new ResponseEntity<>(articleDtos, HttpStatus.OK);
 	}
 
-	@PutMapping("/articles")
+	@PutMapping
 	public ResponseEntity<?> updatesArticles(@RequestBody Article article) {
 		try {
 			articleService.updatesArticles(article);

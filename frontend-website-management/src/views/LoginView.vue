@@ -1,68 +1,72 @@
 <template>
-  <div class="login-container">
-    <div class="login-card">
-      <h2 class="text-center">Login</h2>
-      <form @submit.prevent="login" class="mt-4">
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input
-            v-model="username"
-            type="text"
-            class="form-control"
-            id="username"
-            required
-          />
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Login</h4>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                v-model="userDetails.accountNumber"
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Enter your username"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                v-model="userDetails.accountPassword"
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="Enter your password"
+              />
+            </div>
+            <p></p>
+            <button class="btn btn-primary" @click="submit">Login</button>
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input
-            v-model="password"
-            type="password"
-            class="form-control"
-            id="password"
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-      </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
+import { login } from "../api/api";
+import Swal from "sweetalert2";
 
-const username = ref("");
-const password = ref("");
+const router = useRouter();
 
-const login = () => {
-  // 在這裡處理登入邏輯
-  console.log("Login clicked");
+const userDetails = reactive({
+  accountNumber: "",
+  accountPassword: "",
+});
+
+const urlPath = "/v1/auth/authenticate";
+
+const submit = async () => {
+  try {
+    const response = await login(urlPath, userDetails);
+    const httpStatus = response.status;
+    if (httpStatus == 200) {
+      router.push("backstage/articles");
+    }
+  } catch (error) {
+    const httpStatus = error.response?.status;
+    if (httpStatus == 403) {
+      Swal.fire({
+        title: "登入失敗",
+        icon: "error",
+        confirmButtonText: "確定",
+      });
+    }
+  }
 };
 </script>
-
-<style scoped>
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.login-card {
-  width: 300px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-label {
-  font-weight: bold;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-</style>

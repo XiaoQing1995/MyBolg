@@ -32,6 +32,10 @@ public class AccountService implements IAccountService {
 	// 取得所有文章 By Pageable，並且不帶密碼
 	@Override
 	public Page<Account> getAccounts(Pageable pageable) {
+//		帶密碼
+//		Page<Account> accounts = accountRepository.findAll(pageable);
+
+//		不帶密碼
 		Page<Account> accounts = accountRepository.findAll(pageable).map(this::convertNoPassword);
 		return accounts;
 	}

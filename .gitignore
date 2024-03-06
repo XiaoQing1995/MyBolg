@@ -1,3 +1,4 @@
 BackendServer/Blog/src/main/resources/application.properties
 BackendServer/SpringSecurityAndJwt/
 BackendServer/SpringSecurityAndJwtAmigoscode/
+frontend-website-management/.env

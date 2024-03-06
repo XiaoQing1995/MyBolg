@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/accounts")
+@CrossOrigin("http://localhost:5173")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AccountController {
 	private final IAccountService accountService;
 
@@ -39,6 +43,7 @@ public class AccountController {
 	@PutMapping
 	public ResponseEntity<?> updatesAccounts(@RequestBody Account account) {
 		try {
+			System.out.println(account.toString());
 			accountService.updatesAccounts(account);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {

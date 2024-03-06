@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.xiaoqing.blog.model.account.Account;
 import com.xiaoqing.blog.model.account.AccountRepository;
-import com.xiaoqing.blog.model.account.Role;
+import com.xiaoqing.blog.model.role.Role;
 import com.xiaoqing.blog.security.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthenticationService {
 		var user = Account.builder()
 				.accountNumber(account.getAccountNumber())
 				.accountPassword(passwordEncoder.encode(account.getAccountPassword()))
-				.role(Role.USER)
+				.role(account.getRole())
 				.build();
 		accountRepository.save(user);
 		var jwtToken = jwtService.generateToken(user);

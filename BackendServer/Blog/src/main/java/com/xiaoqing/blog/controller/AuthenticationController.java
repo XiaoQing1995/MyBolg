@@ -1,6 +1,9 @@
 package com.xiaoqing.blog.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:5173")
 public class AuthenticationController {
 
 	private final AuthenticationService service;
@@ -27,6 +31,6 @@ public class AuthenticationController {
 	
 	@PostMapping("/authenticate")
 	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-		return ResponseEntity.ok(service.authenticate(request));
+		return new ResponseEntity<> (service.authenticate(request),HttpStatus.OK);
 	}
 }

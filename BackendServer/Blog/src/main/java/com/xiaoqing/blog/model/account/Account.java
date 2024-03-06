@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xiaoqing.blog.model.role.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
