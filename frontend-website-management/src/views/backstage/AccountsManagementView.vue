@@ -14,9 +14,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { apiGet, apiPost } from "../api/api";
+import { apiGet, apiPost } from "@/api/api";
 import { useRouter } from "vue-router";
-import AccountItem from "@/components/AccountItem.vue";
+import AccountItem from "@/components/backstage/AccountItem.vue";
 import Swal from "sweetalert2";
 
 const urlPathAccounts = "/v1/accounts";

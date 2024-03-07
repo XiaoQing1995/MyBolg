@@ -6,42 +6,42 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/frontdesk/HomeView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/backstage/LoginView.vue')
     },
     {
       path: '/backstage',
       name: 'backstage',
-      component: () => import('../views/BackstageView.vue'),
+      component: () => import('../views/backstage/BackstageView.vue'),
       children: [
         {
           path: 'articles',
           name: 'articles',
-          component: () => import('../views/ArticlesView.vue')
+          component: () => import('../views/backstage/ArticlesView.vue')
         },
         {
           path: 'accountsManagement',
           name: 'accountsManagement',
-          component: () => import('../views/AccountsManagementView.vue')
+          component: () => import('../views/backstage/AccountsManagementView.vue')
         },
         {
           path: 'articlesEdit/:id',
           name: 'articlesEdit',
-          component: () => import('../views/ArticlesEditView.vue')
+          component: () => import('../views/backstage/ArticlesEditView.vue')
         },
         {
           path: 'articlesInsert',
           name: 'articlesInsert',
-          component: () => import('../views/ArticlesInsertView.vue')
+          component: () => import('../views/backstage/ArticlesInsertView.vue')
         },
         {
           path: 'articleClassesManagement',
           name: 'articleClassesManagement',
-          component: () => import('../views/ArticleClassesManagementView.vue')
+          component: () => import('../views/backstage/ArticleClassesManagementView.vue')
         },
       ]
     },

@@ -11,8 +11,8 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { apiGet, apiPost } from "../api/api";
-import ArticleClassItem from "@/components/ArticleClassItem.vue";
+import { apiGet, apiPost } from "@/api/api";
+import ArticleClassItem from "@/components/backstage/ArticleClassItem.vue";
 import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
 

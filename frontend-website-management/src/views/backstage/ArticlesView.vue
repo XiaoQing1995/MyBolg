@@ -48,9 +48,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { apiGet } from "../api/api";
+import { apiGet } from "@/api/api";
 import { useRouter } from "vue-router";
-import ArticleItem from "@/components/ArticleItem.vue";
+import ArticleItem from "@/components/backstage/ArticleItem.vue";
 
 const urlPathArticle = "/v1/articles";
 const urlPathArticleClasses = "/v1/articleclasses";

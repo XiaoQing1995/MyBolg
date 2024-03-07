@@ -39,7 +39,7 @@
 <script setup>
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
-import { login } from "../api/api";
+import { login } from "@/api/api";
 import Swal from "sweetalert2";
 
 const router = useRouter();
