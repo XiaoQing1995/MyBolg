@@ -1,30 +1,33 @@
 <template>
   <div>
-    <h1 class="my-4">Welcome to My Blog!</h1>
-
-    <div class="card mb-4">
-      <img
-        src="https://placekitten.com/800/400"
-        class="card-img-top"
-        alt="Blog Post Image"
-      />
-      <div class="card-body">
-        <h2 class="card-title">Learning Vue.js</h2>
-        <p class="card-text">
-          This is my first blog post about learning Vue.js. It's an amazing framework!
-        </p>
-        <a href="#" class="btn btn-primary">Read More</a>
-      </div>
+    <Navbar />
+    <div class="container mt-5">
+      <ArticleItem :article="articleData" @articleDeleted="handleArticleDeleted" />
     </div>
-
-    <!-- Add more blog posts as needed -->
   </div>
 </template>
 
 <script setup>
-// No need to export anything in script setup
+import Navbar from "@/components/frontdesk/Navbar.vue";
+import ArticleItem from "@/components/frontdesk/ArticleItem.vue";
+
+// 假資料
+const articleData = {
+  articleId: 1,
+  articleTitle: "Learning Vue.js",
+  articleClass: {
+    articleClassName: "Technology",
+    articleClassId: 1,
+  },
+  articleDate: "2024-03-01",
+  articleImg: "base64-encoded-image-string", // 假設這是一張 base64 編碼的圖片
+};
+
+const handleArticleDeleted = () => {
+  // 處理文章被刪除後的邏輯
+};
 </script>
 
 <style scoped>
-/* Add your component-specific styles here */
+/* 其他樣式 */
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <NavMenu />
+  <Navbar />
   <RouterView />
 
 </template>
 
 <script setup>
-import NavMenu from '@/components/backstage/NavMenu.vue'
+import Navbar from '@/components/backstage/Navbar.vue'
 import { useRouter } from 'vue-router';
 const isLogin = localStorage.getItem("isLogin")
 const router = useRouter()
