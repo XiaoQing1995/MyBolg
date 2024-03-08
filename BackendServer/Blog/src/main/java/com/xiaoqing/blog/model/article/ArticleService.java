@@ -35,6 +35,13 @@ public class ArticleService implements IArticleService {
 		return articlesDtos;
 	}
 
+	// 取得所有文章Dto By Pageable
+	@Override
+	public Page<Article> getArticles(Pageable pageable) {
+		Page<Article> articles = articleRepository.findAll(pageable);
+		return articles;
+	}
+
 	// 取得文章 By Id，依照文章ID返回文章
 	@Override
 	public Article getArticlesById(int id) {
@@ -48,15 +55,21 @@ public class ArticleService implements IArticleService {
 
 	// 取得所有文章Dto By ArticleClassId Pageable，根據文章種類的ID及分頁信息返回文章Dto的分頁結果
 	@Override
-	public Page<ArticleDto> getArticlesByArticleClassId(int id, Pageable pageable) {
+	public Page<ArticleDto> getArticlesDtosByArticleClassId(int id, Pageable pageable) {
 		Page<ArticleDto> articlesDtos = articleRepository.findByArticleClass_ArticleClassId(id, pageable)
 				.map(this::convertToDto);
 		return articlesDtos;
 	}
 	
+	@Override
+	public Page<Article> getArticlesByArticleClassId(int id, Pageable pageable) {
+		Page<Article> articles = articleRepository.findByArticleClass_ArticleClassId(id, pageable);
+		return articles;
+	}
+
 	// 更新文章
 	@Override
-	public void updatesArticles (Article article) {
+	public void updatesArticles(Article article) {
 		articleRepository.save(article);
 	}
 
@@ -77,5 +90,5 @@ public class ArticleService implements IArticleService {
 		articleDto.setArticleClass(article.getArticleClass());
 		return articleDto;
 	}
-	
+
 }

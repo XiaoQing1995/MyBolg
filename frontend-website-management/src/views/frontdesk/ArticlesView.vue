@@ -42,6 +42,7 @@ const getArticles = async () => {
   );
   articles.value = response.data.content;
   totalPages.value = response.data.totalPages;
+  console.log(articles.value)
 };
 
 const getArticlesByClassId = async () => {
