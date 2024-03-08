@@ -19,9 +19,14 @@ async function login(path, userDetails) {
 
 async function apiGet(path, router) {
   try {
+    let response
     const token = localStorage.getItem('token')
-    const headers = { Authorization: `Bearer ${token}` }
-    const response = await axios.get(`${host}${path}`, { headers })
+    if (token != null) {
+      const headers = { Authorization: `Bearer ${token}` }
+      response = await axios.get(`${host}${path}`, { headers })
+    } else {
+      response = await axios.get(`${host}${path}`)
+    }
     return response
   } catch (error) {
     console.error('api error')

@@ -4,9 +4,31 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path:'/',
+      name:'frontPage',
+      redirect: '/home/articles'
+    },
+    {
+      path: '/home',
       name: 'home',
-      component: () => import('../views/frontdesk/HomeView.vue')
+      component: () => import('../views/frontdesk/HomeView.vue'),
+      children: [
+        {
+          path: 'articles',
+          name: 'home.articles',
+          component: () => import('../views/frontdesk/ArticlesView.vue'),
+        },
+        {
+          path: 'articles/:id',
+          name: 'home.articles.id',
+          component: () => import('../views/frontdesk/ArticlesDetailsView.vue'),
+        },
+        {
+          path: 'articles/classes/:id',
+          name: 'home.articles.classes.id',
+          component: () => import('../views/frontdesk/ArticlesView.vue'),
+        },
+      ]
     },
     {
       path: '/login',

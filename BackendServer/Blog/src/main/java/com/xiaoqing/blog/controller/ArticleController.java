@@ -72,6 +72,7 @@ public class ArticleController {
 	@GetMapping("/class/{id}")
 	public ResponseEntity<?> getArticlesByClassId(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @PathVariable("id") int id) {
+		System.out.println("class");
 		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "articleId"));
 		Page<ArticleDto> articleDtos = articleService.getArticlesByArticleClassId(id, pageable);
 		return new ResponseEntity<>(articleDtos, HttpStatus.OK);

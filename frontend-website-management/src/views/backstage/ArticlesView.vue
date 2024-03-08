@@ -12,37 +12,18 @@
     </select>
 
     <ArticleItem
-      v-for="article in paginatedArticles"
+      v-for="article in articles"
       :key="article.id"
       :article="article"
       @articleDeleted="refreshViewGetArticles"
     />
 
     <!-- Bootstrap 分頁元件 -->
-    <nav aria-label="Page navigation example" class="d-flex justify-content-center">
-      <ul class="pagination">
-        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-          <a class="page-link" @click="changePage(currentPage - 1)" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-
-        <li
-          class="page-item"
-          v-for="page in totalPages"
-          :key="page"
-          :class="{ active: currentPage === page }"
-        >
-          <a class="page-link" @click="changePage(page)">{{ page }}</a>
-        </li>
-
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-          <a class="page-link" @click="changePage(currentPage + 1)" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <Page
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      :changePage="changePage"
+    />
   </div>
 </template>
 
@@ -51,6 +32,7 @@ import { ref, onMounted } from "vue";
 import { apiGet } from "@/api/api";
 import { useRouter } from "vue-router";
 import ArticleItem from "@/components/backstage/ArticleItem.vue";
+import Page from "@/components/unit/Page.vue"
 
 const urlPathArticle = "/v1/articles";
 const urlPathArticleClasses = "/v1/articleclasses";
@@ -61,14 +43,13 @@ const totalPages = ref(0);
 
 const pageSize = 10; // 每頁顯示的文章數量
 
-const paginatedArticles = ref([]);
-
 const categoryOptions = ref([]);
 const selectedCategory = ref("0");
 
-onMounted(async () => {
-  await getArticles();
-  await fetchCategoryOptions();
+
+onMounted(() => {
+  getArticles();
+  fetchCategoryOptions();
 });
 
 const getArticles = async () => {
@@ -92,7 +73,7 @@ const getArticles = async () => {
   console.log(response);
   articles.value = response.data.content;
   totalPages.value = response.data.totalPages;
-  paginatedArticles.value = articles.value;
+  // paginatedArticles.value = articles.value;
 };
 
 const refreshViewGetArticles = () => {
