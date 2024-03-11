@@ -26,7 +26,11 @@ public class AuthenticationController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<AuthenticationResponse> register(@RequestBody Account account) {
-		return ResponseEntity.ok(service.register(account));
+		if (service.register(account)) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PostMapping("/authenticate")

@@ -50,8 +50,11 @@
             </div>
           </li>
           <li class="nav-item">
-            <router-link to="/" class="nav-link" :class="{ active: $route.path === '/' }"
-              >Home</router-link
+            <router-link
+              to="/home/aboutMe"
+              class="nav-link"
+              :class="{ active: $route.path === '/home/aboutMe' }"
+              >關於我</router-link
             >
           </li>
         </ul>
@@ -61,7 +64,7 @@
 </template>
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { apiGet } from "@/api/api";
+import { apiGetForFrontDeskUse } from "@/api/api";
 import { useRouter } from "vue-router";
 
 const isNavbarFixed = ref(false);
@@ -75,7 +78,7 @@ const handleScroll = () => {
 };
 
 const getArticleClasses = async () => {
-  const response = await apiGet(urlPathArticleClasses, router);
+  const response = await apiGetForFrontDeskUse(urlPathArticleClasses, router);
   articleClasses.value = response.data;
 };
 

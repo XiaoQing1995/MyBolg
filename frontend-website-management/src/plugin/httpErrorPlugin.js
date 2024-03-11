@@ -2,6 +2,8 @@
 import Swal from "sweetalert2";
 export const whenErrorCheckHttpStatus = (error, router) => {
     const httpStatus = error.response?.status;
+    console.log("httpStatus")
+    console.log(httpStatus)
 
     if (httpStatus == 400) {
         Swal.fire({
@@ -13,10 +15,17 @@ export const whenErrorCheckHttpStatus = (error, router) => {
 
     if (httpStatus === 403) {
       cleanLoginStore();
-      router.push("../login");
+      router.push({ path: "/login"})
       console.log("httpError")
     }
   };
+
+  export const whenErrorCheckHttpStatusForFrontDeskUse = (error, router) => {
+    const httpStatus = error.response?.status;
+    if (httpStatus == 400) {
+      router.push({ path: "/home/articles"})
+    }
+  }
 
   function cleanLoginStore() {
     window.localStorage.clear()

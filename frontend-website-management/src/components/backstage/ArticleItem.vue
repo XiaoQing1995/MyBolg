@@ -60,7 +60,7 @@ const deleteArticle = async () => {
           text: "刪除成功",
           icon: "success",
         }).then(() => {
-          emit('articleDeleted');
+          emit('articleDeleted','');
         });
       } catch (error) {
         whenErrorCheckHttpStatus(error, router)

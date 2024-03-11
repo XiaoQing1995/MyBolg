@@ -1,15 +1,33 @@
 <template>
-  <div>
-    <ArticleItem v-for="article in articles" :key="article.id" :article="article" />
-
-    <!-- Bootstrap 分頁元件 -->
-    <Page :currentPage="currentPage" :totalPages="totalPages" :changePage="changePage" />
+  <div class="article-item-container">
+    <div class="row">
+      <div class="col-md-4" v-for="article in articles" :key="article.id">
+        <div>
+          <ArticleItem :article="article" />
+        </div>
+      </div>
+    </div>
   </div>
+  <!-- Bootstrap 分頁元件 -->
+  <Page
+    v-if="showPage"
+    :currentPage="currentPage"
+    :totalPages="totalPages"
+    :changePage="changePage"
+  />
 </template>
 
+<style scoped>
+.article-item-container {
+  margin-top: 2%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+</style>
+
 <script setup>
-import { ref, onMounted, watchEffect, watch } from "vue";
-import { apiGet } from "@/api/api";
+import { ref, onMounted, watchEffect, watch, nextTick } from "vue";
+import { apiGetForFrontDeskUse } from "@/api/api";
 import { useRouter, useRoute } from "vue-router";
 import ArticleItem from "@/components/frontdesk/ArticleItem.vue";
 import Page from "@/components/unit/Page.vue";
@@ -22,32 +40,31 @@ const route = useRoute();
 const currentPage = ref(1);
 const totalPages = ref(0);
 
-const pageSize = 10; // 每頁顯示的文章數量
+const pageSize = 9; // 每頁顯示的文章數量
 const articles = ref([]);
 const categoryOptions = ref([]);
 
+const showPage = ref(false);
+
 onMounted(() => {
-  getArticles();
   fetchCategoryOptions();
-  console.log(route);
-  if (route.name === "home.articles.classes.id") {
-    console.log(route.params.id);
-  }
 });
 
 const getArticles = async () => {
-  const response = await apiGet(
+  console.log("getArticles");
+  const response = await apiGetForFrontDeskUse(
     `${urlPathArticles}?page=${currentPage.value - 1}&size=${pageSize}`,
     router
   );
   articles.value = response.data.content;
   totalPages.value = response.data.totalPages;
-  console.log(articles.value)
+  console.log(articles.value);
+  showPageWhenDOMRender()
 };
 
 const getArticlesByClassId = async () => {
   const articleClassId = route.params.id;
-  const response = await apiGet(
+  const response = await apiGetForFrontDeskUse(
     `${urlPathArticles}/class/${articleClassId}?page=${
       currentPage.value - 1
     }&size=${pageSize}`,
@@ -55,6 +72,7 @@ const getArticlesByClassId = async () => {
   );
   articles.value = response.data.content;
   totalPages.value = response.data.totalPages;
+  showPageWhenDOMRender()
 };
 
 const changePage = async (page) => {
@@ -68,17 +86,28 @@ const changePage = async (page) => {
   }
 };
 
+const showPageWhenDOMRender = () => {
+  nextTick(() => {
+    showPage.value = true;
+  });
+};
+
 const fetchCategoryOptions = async () => {
-  const response = await apiGet(urlPathArticleClasses, router);
+  const response = await apiGetForFrontDeskUse(urlPathArticleClasses, router);
   categoryOptions.value = response.data;
 };
 
 // 當 route 變化時執行
 watchEffect(() => {
   console.log("watchEffect");
+  console.log(route.name);
   if (route.name === "home.articles") {
     getArticles();
-  } else if (route.name === "home.articles.classes.id") {
+  } else if (
+    route.name === "home.articles.classes.id" ||
+    route.name === "home.articlesDetails"
+  ) {
+    console.log("test");
     getArticlesByClassId();
   }
 });
@@ -90,3 +119,5 @@ watch(
   }
 );
 </script>
+
+<style scoped></style>

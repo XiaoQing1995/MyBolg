@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { whenErrorCheckHttpStatus } from '@/plugin/httpErrorPlugin'
+import { whenErrorCheckHttpStatus, whenErrorCheckHttpStatusForFrontDeskUse } from '@/plugin/httpErrorPlugin'
 const host = import.meta.env.VITE_API_JAVAURL
 
 async function login(path, userDetails) {
@@ -19,18 +19,29 @@ async function login(path, userDetails) {
 
 async function apiGet(path, router) {
   try {
-    let response
+    checkToken(router)
     const token = localStorage.getItem('token')
-    if (token != null) {
-      const headers = { Authorization: `Bearer ${token}` }
-      response = await axios.get(`${host}${path}`, { headers })
-    } else {
-      response = await axios.get(`${host}${path}`)
-    }
+    const headers = { Authorization: `Bearer ${token}` }
+    const response = await axios.get(`${host}${path}`, { headers })
+    // if (token != null) {
+    //   const headers = { Authorization: `Bearer ${token}` }
+    //   response = await axios.get(`${host}${path}`, { headers })
+    // } else {
+    //   response = await axios.get(`${host}${path}`)
+    // }
     return response
   } catch (error) {
     console.error('api error')
     whenErrorCheckHttpStatus(error, router)
+  }
+}
+
+async function apiGetForFrontDeskUse(path, router) {
+  try {
+    const response = await axios.get(`${host}${path}`)
+    return response
+  } catch (error) {
+    whenErrorCheckHttpStatusForFrontDeskUse(error, router)    
   }
 }
 
@@ -79,4 +90,11 @@ function cleanLoginStore() {
   window.localStorage.clear()
 }
 
-export { login, apiGet, apiPost, apiUpdate, apiDelete, cleanLoginStore }
+function checkToken(router){
+  const token = localStorage.getItem("token")
+  if (token == null) {
+    router.push({path: "/login"})
+  }
+}
+
+export { login, apiGet, apiPost, apiUpdate, apiDelete, cleanLoginStore, apiGetForFrontDeskUse }

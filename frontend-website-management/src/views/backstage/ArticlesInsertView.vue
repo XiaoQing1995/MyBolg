@@ -47,11 +47,28 @@
       <!-- 文章內容，使用 vue-quill-editor -->
       <div class="mb-3">
         <label for="content" class="form-label">文章內容</label>
-        <ckeditor
-          :editor="editor"
+        <Editor
+          api-key="ovyy5uubb3bz95whlsxmd1vvnnhsz98viov27xsvgwp41jzg"
           v-model="article.articleContent"
-          :config="editorConfig"
-        ></ckeditor>
+          :init="{
+            height: '50vh', // 預設高度
+            autoresize_bottom_margin: 20, // 設定底部邊距
+            toolbar_mode: 'sliding',
+            plugins:
+              'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist image a11ychecker',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            a11y_file_allowed_types: 'image/*',
+            mergetags_list: [
+              { value: 'First.Name', title: 'First Name' },
+              { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) =>
+              respondWith.string(() =>
+                Promise.reject('See docs to implement AI Assistant')
+              ),
+          }"
+        />
       </div>
 
       <!-- 操作按鈕，取消和儲存 -->
@@ -71,16 +88,13 @@
 import { ref, onMounted } from "vue";
 import { apiGet, apiPost } from "@/api/api";
 import { useRouter } from "vue-router";
-import Editor from "@ckeditor/ckeditor5-custom-build/build/ckeditor";
 import Swal from "sweetalert2";
+import Editor from "@tinymce/tinymce-vue";
 
 const router = useRouter();
 
 const urlPathArticle = "/v1/articles";
 const urlPathArticleClass = "/v1/articleclasses";
-
-let editor = Editor;
-let editorConfig = {}; // 設定值
 
 const article = ref({
   articleTitle: "",

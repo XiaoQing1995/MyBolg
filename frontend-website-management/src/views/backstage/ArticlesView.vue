@@ -19,11 +19,7 @@
     />
 
     <!-- Bootstrap 分頁元件 -->
-    <Page
-      :currentPage="currentPage"
-      :totalPages="totalPages"
-      :changePage="changePage"
-    />
+    <Page :currentPage="currentPage" :totalPages="totalPages" :changePage="changePage" />
   </div>
 </template>
 
@@ -32,7 +28,7 @@ import { ref, onMounted } from "vue";
 import { apiGet } from "@/api/api";
 import { useRouter } from "vue-router";
 import ArticleItem from "@/components/backstage/ArticleItem.vue";
-import Page from "@/components/unit/Page.vue"
+import Page from "@/components/unit/Page.vue";
 
 const urlPathArticle = "/v1/articles";
 const urlPathArticleClasses = "/v1/articleclasses";
@@ -45,7 +41,6 @@ const pageSize = 10; // 每頁顯示的文章數量
 
 const categoryOptions = ref([]);
 const selectedCategory = ref("0");
-
 
 onMounted(() => {
   getArticles();

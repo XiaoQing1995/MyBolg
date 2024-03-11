@@ -80,6 +80,7 @@ const insertAccount = async () => {
     try {
       const response = await apiPost(`${urlPathAuthentication}/register`, newAccount, router);
       const httpStatus = response.status;
+      console.log(response)
 
       if (httpStatus == 200) {
         Swal.fire({

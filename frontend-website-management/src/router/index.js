@@ -12,6 +12,7 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: () => import('../views/frontdesk/HomeView.vue'),
+      redirect: '/home/articles',
       children: [
         {
           path: 'articles',
@@ -28,6 +29,17 @@ const router = createRouter({
           name: 'home.articles.classes.id',
           component: () => import('../views/frontdesk/ArticlesView.vue'),
         },
+        {
+          path: 'articlesDetails/:id',
+          name: 'home.articlesDetails',
+          component: () => import('../views/frontdesk/ArticlesDetailsView.vue')
+        },
+        {
+          path: 'aboutMe',
+          name: 'home.aboutMe',
+          component: () => import('../views/frontdesk/AboutMeView.vue')
+
+        }
       ]
     },
     {

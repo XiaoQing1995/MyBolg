@@ -48,11 +48,28 @@
       <!-- 文章內容，使用 vue-quill-editor -->
       <div class="mb-3">
         <label for="content" class="form-label">文章內容</label>
-        <ckeditor
-          :editor="editor"
+        <Editor
+          api-key="ovyy5uubb3bz95whlsxmd1vvnnhsz98viov27xsvgwp41jzg"
           v-model="article.articleContent"
-          :config="editorConfig"
-        ></ckeditor>
+          :init="{
+            height: '50vh', // 預設高度
+            autoresize_bottom_margin: 20, // 設定底部邊距
+            toolbar_mode: 'sliding',
+            plugins:
+              'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist image a11ychecker',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            a11y_file_allowed_types: 'image/*',
+            mergetags_list: [
+              { value: 'First.Name', title: 'First Name' },
+              { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) =>
+              respondWith.string(() =>
+                Promise.reject('See docs to implement AI Assistant')
+              ),
+          }"
+        />
       </div>
 
       <!-- 操作按鈕，取消和儲存 -->
@@ -70,19 +87,16 @@
 import { ref, onMounted } from "vue";
 import { apiGet, apiUpdate } from "@/api/api";
 import { useRouter, useRoute } from "vue-router";
-import Editor from "@ckeditor/ckeditor5-custom-build/build/ckeditor";
 import { whenErrorCheckHttpStatus } from "@/plugin/httpErrorPlugin";
 import Swal from "sweetalert2";
+import Editor from "@tinymce/tinymce-vue";
 
 const articleId = ref(null);
 const router = useRouter();
 const route = useRoute();
 
 const urlPathArticles = "/v1/articles";
-const urlPathArticleClasses = "/v1/articleclasses"
-
-let editor = Editor;
-let editorConfig = {}; // 設定值
+const urlPathArticleClasses = "/v1/articleclasses";
 
 const article = ref({
   articleId: "",
@@ -112,11 +126,11 @@ const getArticleDetails = async (articleId) => {
 const fetchCategoryOptions = async () => {
   try {
     const response = await apiGet(urlPathArticleClasses, router);
-    console.log("fetch")
+    console.log("fetch");
     console.log(response.data);
     categoryOptions.value = response.data;
-    console.log("cate")
-    console.log(categoryOptions.value)
+    console.log("cate");
+    console.log(categoryOptions.value);
   } catch (error) {
     whenErrorCheckHttpStatus(error, router);
   }
@@ -158,10 +172,10 @@ const cancelUpdate = () => {
   router.push("/backstage/articles");
 };
 
-onMounted(async () => {
+onMounted(() => {
   articleId.value = route.params.id;
-  await getArticleDetails(articleId.value);
-  await fetchCategoryOptions();
+  getArticleDetails(articleId.value);
+  fetchCategoryOptions();
 });
 </script>
 
@@ -169,5 +183,14 @@ onMounted(async () => {
 .ck-editor__editable {
   min-height: 50vh;
   max-height: 50vh;
+}
+
+@media (min-width: 1024px) {
+  #sample {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: 100%;
+  }
 }
 </style>
