@@ -32,7 +32,7 @@
             :to="`/home/articlesDetails/${article.articleId}`"
             class="custom-link"
           >
-            <h5 class="article-title">{{ article.articleTitle }}</h5>
+            <p class="article-title" style="font-size:xx-large;">{{ article.articleTitle }}</p>
           </router-link>
           <p  style="max-height: 15vh;"
             class="card-text content article-content"

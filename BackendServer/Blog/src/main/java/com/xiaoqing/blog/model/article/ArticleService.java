@@ -82,12 +82,13 @@ public class ArticleService implements IArticleService {
 
 	// 將Article轉為ArticleDto (沒有文章內容)
 	private ArticleDto convertToDto(Article article) {
-		ArticleDto articleDto = new ArticleDto();
-		articleDto.setArticleId(article.getArticleId());
-		articleDto.setArticleTitle(article.getArticleTitle());
-		articleDto.setArticleDate(article.getArticleDate());
-		articleDto.setArticleImg(article.getArticleImg());
-		articleDto.setArticleClass(article.getArticleClass());
+		ArticleDto articleDto = ArticleDto.builder()
+				.articleId(article.getArticleId())
+				.articleTitle(article.getArticleTitle())
+				.articleDate(article.getArticleDate())
+				.articleImg(article.getArticleImg())
+				.articleClass(article.getArticleClass())
+				.build();
 		return articleDto;
 	}
 

@@ -49,14 +49,16 @@ public class ArticleController {
 		}
 	}
 
-	// 取得所有文章Dto By Pageable
+	// 取得所有文章 By Pageable
 	@GetMapping
 	public ResponseEntity<?> getArticles(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "articleId"));
-//		Page<ArticleDto> articleDtos = articleService.getArticleDtos(pageable);
 		Page<Article> article = articleService.getArticles(pageable);
 		return new ResponseEntity<>(article, HttpStatus.OK);
+		
+//		Page<ArticleDto> articleDtos = articleService.getArticleDtos(pageable);
+//		return new ResponseEntity<>(articleDtos, HttpStatus.OK);
 	}
 
 	// 取得文章 ById，依照文章ID返回文章
