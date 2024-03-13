@@ -5,18 +5,12 @@ import org.springframework.data.domain.Pageable;
 
 public interface IAccountService {
 
-	// 新建帳戶
-	public void createsAccounts(Account account);
+//	boolean createAccount(Account account);
 
-	// 取得帳戶 By Pageable
 	Page<Account> getAccounts(Pageable pageable);
 	
-	// 更新帳戶
-	public void updatesAccounts(Account account) throws Exception;
+	boolean updateAccount(Account account) throws Exception;
 
-	// 刪除帳戶
-	void deletesAccounts(int id);
-
-	
+	void deleteAccount(int id);
 
 }

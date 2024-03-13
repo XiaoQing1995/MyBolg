@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 public class AccountController {
 	private final IAccountService accountService;
 
-	// 取得所有帳戶 By Pageable
 	@GetMapping
 	public ResponseEntity<?> getAccounts(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
@@ -39,22 +38,18 @@ public class AccountController {
 		return new ResponseEntity<>(accounts, HttpStatus.OK);
 	}
 
-	// 更新帳戶
 	@PutMapping
-	public ResponseEntity<?> updatesAccounts(@RequestBody Account account) {
-		try {
-			System.out.println(account.toString());
-			accountService.updatesAccounts(account);
+	public ResponseEntity<?> updateAccount(@RequestBody Account account) throws Exception {
+		if (accountService.updateAccount(account)) {
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletesAccounts(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteAccount(@PathVariable("id") int id) {
 		try {
-			accountService.deletesAccounts(id);
+			accountService.deleteAccount(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

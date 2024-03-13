@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,16 +31,14 @@ public class ArticleController {
 
 	private final IArticleService articleService;
 
-	// 新建文章
 	@PostMapping
-	public ResponseEntity<?> createsArticle(@ModelAttribute ArticleDTO articleDTO) {
-		if (articleService.createsArticle(articleDTO)) {
+	public ResponseEntity<?> createArticle(@ModelAttribute ArticleDTO articleDTO) {
+		if (articleService.createArticle(articleDTO)) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	// 取得所有文章 By Pageable
 	@GetMapping
 	public ResponseEntity<?> getArticles(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
@@ -50,17 +47,15 @@ public class ArticleController {
 		return new ResponseEntity<>(article, HttpStatus.OK);
 	}
 
-	// 取得文章 ById，依照文章ID返回文章
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getArticles(@PathVariable("id") int id) {
-		Article article = articleService.getArticlesById(id);
+	public ResponseEntity<?> getArticleById(@PathVariable("id") int id) {
+		Article article = articleService.getArticleById(id);
 		if (article != null) {
 			return new ResponseEntity<>(article, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	// 取得特定種類所有文章Dto By ArticleClassId Pageable，根據文章種類的ID及分頁信息返回文章Dto
 	@GetMapping("/class/{id}")
 	public ResponseEntity<?> getArticlesByClassId(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @PathVariable("id") int id) {
@@ -72,20 +67,21 @@ public class ArticleController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> updatesArticles(@ModelAttribute ArticleDTO articleDTO) {
-		if (articleService.updatesArticles(articleDTO)) {
+	public ResponseEntity<?> updateArticle(@ModelAttribute ArticleDTO articleDTO) {
+		if (articleService.updateArticle(articleDTO)) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	// 刪除文章 By Id，依照文章ID刪除文章
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletesArticles(@PathVariable("id") int id) {
-		if (articleService.deletesArticlesById(id)) {
+	public ResponseEntity<?> deleteArticle(@PathVariable("id") int id) {
+		try {
+			articleService.deleteArticleById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 }

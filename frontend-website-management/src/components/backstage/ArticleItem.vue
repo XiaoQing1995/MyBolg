@@ -58,18 +58,26 @@ const deleteArticle = async () => {
     cancelButtonText: "取消", // 設定取消按鈕的文字
   }).then(async (result) => {
     if (result.isConfirmed) {
-      try {
-        await apiDelete(`${pathUrl}/${props.article.articleId}`, router);
-        Swal.fire({
+        const response = await apiDelete(`${pathUrl}/${props.article.articleId}`, router);
+        const httpStatus = response.status;
+        if (httpStatus == 204) {
+          Swal.fire({
           title: "刪除!",
           text: "刪除成功",
           icon: "success",
         }).then(() => {
           emit('articleDeleted','');
         });
-      } catch (error) {
-        whenErrorCheckHttpStatus(error, router)
-      }
+        } else {
+          Swal.fire({
+          title: "錯誤",
+          text: "刪除失敗",
+          icon: "error",
+        }).then(() => {
+          emit('articleDeleted','');
+        });
+        }
+
     }
   });
   // 處理刪除文章的邏輯

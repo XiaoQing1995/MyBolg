@@ -16,7 +16,7 @@ import ArticleClassItem from "@/components/backstage/ArticleClassItem.vue";
 import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
 
-const urlPath = "/v1/articleclasses";
+const urlPathArticleClasses = "/v1/articleclasses";
 
 // const articleClass = ref([]);
 const articleClasses = ref([]);
@@ -24,7 +24,7 @@ const articleClasses = ref([]);
 const router = useRouter();
 
 const getArticleClasses = async () => {
-  const response = await apiGet(urlPath, router);
+  const response = await apiGet(urlPathArticleClasses, router);
   articleClasses.value = response.data;
 };
 
@@ -49,7 +49,7 @@ const insertArticleClass = () => {
       const insertArticleClass = ref({
         articleClassName: enteredValue,
       });
-      const response = await apiPost(urlPath, insertArticleClass.value, router);
+      const response = await apiPost(urlPathArticleClasses, insertArticleClass.value, router);
       const httpStatus = response.status;
       if (httpStatus == 200) {
         Swal.fire({

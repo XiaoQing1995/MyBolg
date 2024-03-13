@@ -1,14 +1,11 @@
 package com.xiaoqing.blog.model.articleclass;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xiaoqing.blog.model.authentication.AuthenticationService;
-
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -18,39 +15,49 @@ public class ArticleClassService implements IArticleClassService {
 
 	private final ArticleClassRepository articleClassRepository;
 
-	// 取得所有文章種類
 	@Override
-	public List<ArticleClass> getArticleClasses() {
+	public List<ArticleClass> getAllArticleClasses() {
 		return articleClassRepository.findAll();
 	}
 
-	// 取得文章種類 By id，依照文章種類ID返回文章種類
 	@Override
 	public ArticleClass getArticleClassById(int id) {
-		Optional<ArticleClass> optionalArticleClass = articleClassRepository.findById(id);
-		if (optionalArticleClass.isPresent()) {
-			return optionalArticleClass.get();
+		return articleClassRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Article class not found with id: " + id));
+	}
+
+	@Override
+	public boolean createsArticleClass(ArticleClass articleClass) {
+		if (articleClassRepository.findByArticleClassName(articleClass.getArticleClassName()).isPresent()) {
+			return false;
 		}
-		return null;
+
+		try {
+			articleClassRepository.save(articleClass);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean updatesArticleClass(ArticleClass articleClass) {
+		if (articleClassRepository.findById(articleClass.getArticleClassId()).isEmpty()
+				|| articleClassRepository.findByArticleClassName(articleClass.getArticleClassName()).isPresent()) {
+			return false;
+		}
+
+		try {
+			articleClassRepository.save(articleClass);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 
 	}
 
-	// 新建文章種類
 	@Override
-	public void createsArticleClasses(ArticleClass articleClass) {
-		articleClassRepository.save(articleClass);
-	}
-
-	// 更新文章種類
-	@Override
-	public void updatesArticleClasses(ArticleClass articleClass) {
-		articleClassRepository.save(articleClass);
-	}
-
-	// 刪除文章種類 ById，依照文章種類ID刪除文章
-	@Override
-	public void deletesArticleClassesById(int id) {
+	public void deletesArticleClassById(int id) {
 		articleClassRepository.deleteById(id);
 	}
-
 }

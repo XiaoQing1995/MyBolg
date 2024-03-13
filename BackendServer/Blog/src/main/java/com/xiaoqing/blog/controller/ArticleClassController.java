@@ -30,61 +30,45 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/articleclasses")
 @CrossOrigin("http://localhost:5173")
 public class ArticleClassController {
-	
+
 	private final IArticleClassService articleClassService;
 
-	// 取得所有文章種類
 	@GetMapping
-	public ResponseEntity<?> getArticleClasses() {
-		List<ArticleClass> articleClass = articleClassService.getArticleClasses();
+	public ResponseEntity<?> getAllArticleClasses() {
+		List<ArticleClass> articleClass = articleClassService.getAllArticleClasses();
 		return new ResponseEntity<>(articleClass, HttpStatus.OK);
 	}
 
-	// 取得文章種類 By id，依照文章種類ID返回文章種類
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getArticleClasses(@PathVariable("id") int id) {
+	public ResponseEntity<ArticleClass> getArticleClassById(@PathVariable("id") int id) {
 		ArticleClass articleClass = articleClassService.getArticleClassById(id);
-		if (articleClass != null) {
-			return new ResponseEntity<>(articleClass, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(articleClass, HttpStatus.OK);
 	}
 
-	// 新建文章種類
 	@PostMapping
-	public ResponseEntity<?> createsArticleClasses(@RequestBody ArticleClass articleClass) {
-		try {
-			articleClassService.createsArticleClasses(articleClass);
+	public ResponseEntity<?> createArticleClass(@RequestBody ArticleClass articleClass) {
+		if (articleClassService.createsArticleClass(articleClass)) {
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	// 更新文章種類
 	@PutMapping
-	public ResponseEntity<?> updatesArticleClasses(@RequestBody ArticleClass articleClass) {
-		try {
-			System.out.println(articleClass.toString());
-			articleClassService.updatesArticleClasses(articleClass);
+	public ResponseEntity<?> updateArticleClass(@RequestBody ArticleClass articleClass) {
+		if (articleClassService.updatesArticleClass(articleClass)) {
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			// TODO: handle exception
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	// 刪除文章種類 ById，依照文章種類ID刪除文章
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletesArticleClasses(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteArticleClassById(@PathVariable("id") int id) {
 		try {
-			articleClassService.deletesArticleClassesById(id);
+			articleClassService.deletesArticleClassById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 }

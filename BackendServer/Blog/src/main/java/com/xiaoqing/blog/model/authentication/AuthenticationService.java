@@ -22,26 +22,16 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 
 	public boolean register(Account account) {
-		if (accountRepository.findByAccountNumber(account.getAccountNumber()).isPresent()) {
-			return false;
+		if (accountRepository.findByAccountNumber(account.getAccountNumber()).isEmpty()) {
+			var user = Account.builder().accountNumber(account.getAccountNumber())
+					.accountPassword(passwordEncoder.encode(account.getAccountPassword())).role(account.getRole())
+					.build();
+			accountRepository.save(user);
+			var jwtToken = jwtService.generateToken(user);
+			return true;
 		}
-		var user = Account.builder().accountNumber(account.getAccountNumber())
-				.accountPassword(passwordEncoder.encode(account.getAccountPassword())).role(account.getRole()).build();
-		accountRepository.save(user);
-		var jwtToken = jwtService.generateToken(user);
-		return true;
 
-//		var user = Account.builder()
-//				.accountNumber(account.getAccountNumber())
-//				.accountPassword(passwordEncoder.encode(account.getAccountPassword()))
-//				.role(account.getRole())
-//				.build();
-//		Account accountSave = accountRepository.save(user);
-//		System.out.println(accountSave);
-//		var jwtToken = jwtService.generateToken(user);
-//		return AuthenticationResponse.builder()
-//				.token(jwtToken)
-//				.build();
+		return false;
 
 	}
 

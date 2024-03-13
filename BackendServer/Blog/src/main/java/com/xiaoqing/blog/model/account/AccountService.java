@@ -19,32 +19,34 @@ public class AccountService implements IAccountService {
 
 	private final PasswordEncoder passwordEncoder;
 
-	// 新建帳戶
-	@Override
-	public void createsAccounts(Account account) {
+//	@Override
+//	public boolean createAccount(Account account) {
+//		if (accountRepository.findByAccountNumber(account.getAccountNumber()).isEmpty()) {
+//			Account user = Account.builder().accountNumber(account.getAccountNumber())
+//					.accountPassword(passwordEncoder.encode(account.getAccountPassword())).role(account.getRole())
+//					.build();
+//			accountRepository.save(user);
+//			return true;
+//		}
+//		return false;
+//	}
 
-		Account user = Account.builder().accountNumber(account.getAccountNumber())
-				.accountPassword(passwordEncoder.encode(account.getAccountPassword())).role(account.getRole()).build();
-
-		accountRepository.save(user);
-	}
-
-	// 取得所有文章 By Pageable，並且不帶密碼
 	@Override
 	public Page<Account> getAccounts(Pageable pageable) {
-//		帶密碼
-//		Page<Account> accounts = accountRepository.findAll(pageable);
-
 //		不帶密碼
-		Page<Account> accounts = accountRepository.findAll(pageable).map(this::convertNoPassword);
+		Page<Account> accounts = accountRepository.findAll(pageable).map(this::convertAccountNoPassword);
 		return accounts;
 	}
 
-	// 更新帳戶
 	@Override
-	public void updatesAccounts(Account account) {
+	public boolean updateAccount(Account account) {
 		Optional<Account> accountById = accountRepository.findById(account.getAccountId());
-		if (accountById.isPresent()) {
+
+		if (accountById.isEmpty()) {
+			return false;
+		}
+
+		try {
 			if (account.getAccountPassword() == null || account.getAccountPassword().isEmpty()) {
 				Account user = Account.builder().accountId(account.getAccountId())
 						.accountNumber(account.getAccountNumber())
@@ -59,18 +61,20 @@ public class AccountService implements IAccountService {
 
 				accountRepository.save(user);
 			}
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 
 	}
 
-	// 刪除帳戶
 	@Override
-	public void deletesAccounts(int id) {
+	public void deleteAccount(int id) {
 		accountRepository.deleteById(id);
 	}
 
 	// 轉為沒有密碼的 Account
-	private Account convertNoPassword(Account account) {
+	private Account convertAccountNoPassword(Account account) {
 		Account user = Account.builder().accountId(account.getAccountId()).accountNumber(account.getAccountNumber())
 				.role(account.getRole()).build();
 		return user;
