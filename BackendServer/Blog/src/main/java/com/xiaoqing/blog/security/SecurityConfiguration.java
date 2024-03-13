@@ -37,8 +37,10 @@ public class SecurityConfiguration {
 				.requestMatchers("/api/v1/auth/register").hasAuthority("ADMIN")
 				.requestMatchers("/api/v1/auth/authenticate").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/articles/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/articleclasses/**").permitAll().anyRequest()
-				.authenticated())
+				.requestMatchers(HttpMethod.GET, "/api/v1/articleclasses/**").permitAll()
+				.requestMatchers("/api/v1/imageTest/**").permitAll()
+				.requestMatchers("/images/**").permitAll()
+				.anyRequest().authenticated())
 		.sessionManagement((session) -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authenticationProvider(authenticationProvider)

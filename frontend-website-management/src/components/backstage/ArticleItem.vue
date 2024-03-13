@@ -4,8 +4,8 @@
     <div class="row">
       <div class="col-md-1">
         <img
-          v-if="article.articleImg"
-          :src="`data:image/jpeg;base64,${article.articleImg}`"
+          v-if="fullImagePath"
+          :src="fullImagePath"
           class="img-fluid"
           alt="Article Image"
         />
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits  } from "vue";
+import { defineProps, defineEmits, computed  } from "vue";
 import { useRouter } from "vue-router";
 import { apiDelete } from "@/api/api";
 import { whenErrorCheckHttpStatus } from "@/plugin/httpErrorPlugin";
@@ -34,6 +34,11 @@ import Swal from "sweetalert2";
 const router = useRouter();
 
 const pathUrl = "/v1/articles"
+const imageUrl = import.meta.env.VITE_API_SERVERURL;
+
+const fullImagePath = computed(() => {
+  return `${imageUrl}${props.article.articleThumbnailImagePath}`;
+});
 
 const props = defineProps(["article"]);
 const emit = defineEmits('articleDeleted');

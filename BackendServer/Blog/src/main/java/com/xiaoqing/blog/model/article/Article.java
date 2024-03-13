@@ -29,7 +29,8 @@ public class Article {
 	private String articleTitle;
 	private String articleContent;
 	private String articleDate;
-	private byte[] articleImg;
+	private String articleImagePath;
+	private String articleThumbnailImagePath;
 	
 //	@Column(name = "articleclass_id")
 //	private int articleclass_id;

@@ -9,30 +9,44 @@
       @deleteAccount="refreshViewGetAccounts"
       @updateAccount="refreshViewGetAccounts"
     />
+    <Page
+      v-if="showPage"
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      :changePage="changePage"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { apiGet, apiPost } from "@/api/api";
 import { useRouter } from "vue-router";
 import AccountItem from "@/components/backstage/AccountItem.vue";
 import Swal from "sweetalert2";
+import Page from "@/components/unit/Page.vue";
 
 const urlPathAccounts = "/v1/accounts";
 const urlPathRoles = "/v1/roles";
-const urlPathAuthentication = "/v1/auth"
+const urlPathAuthentication = "/v1/auth";
 
 // const account = ref([]);
 const accounts = ref([]);
 const roles = ref();
 
+const currentPage = ref(1);
+const totalPages = ref(0);
+const pageSize = 10;
+const showPage = ref(false);
+
 const router = useRouter();
 
 const getAccounts = async () => {
-  const response = await apiGet(urlPathAccounts, router);
+  const response = await apiGet(`${urlPathAccounts}?page=${currentPage.value - 1}&size=${pageSize}`, router);
   console.log(response.data);
   accounts.value = response.data.content;
+  totalPages.value = response.data.totalPages;
+  showPageWhenDOMRender();
 };
 
 const getRoles = async () => {
@@ -51,8 +65,8 @@ const insertAccount = async () => {
       '<input id="accountNumber" class="swal2-input" placeholder="帳號">' +
       '<input id="accountPassword" type="password" class="swal2-input" placeholder="密碼">' +
       '<select id="role" class="swal2-select">' +
-      roles.value.map((role) => `<option value="${role}">${role}</option>`).join('') +
-      '</select>',
+      roles.value.map((role) => `<option value="${role}">${role}</option>`).join("") +
+      "</select>",
     inputAttributes: {
       autocapitalize: "off",
     },
@@ -78,9 +92,13 @@ const insertAccount = async () => {
     };
 
     try {
-      const response = await apiPost(`${urlPathAuthentication}/register`, newAccount, router);
+      const response = await apiPost(
+        `${urlPathAuthentication}/register`,
+        newAccount,
+        router
+      );
       const httpStatus = response.status;
-      console.log(response)
+      console.log(response);
 
       if (httpStatus == 200) {
         Swal.fire({
@@ -98,7 +116,20 @@ const insertAccount = async () => {
 };
 
 onMounted(() => {
+  getRoles();
   getAccounts();
 });
-getRoles();
+
+const changePage = async (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+    await getAccounts();
+  }
+};
+
+const showPageWhenDOMRender = () => {
+  nextTick(() => {
+    showPage.value = true;
+  });
+};
 </script>

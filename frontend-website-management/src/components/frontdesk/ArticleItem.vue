@@ -8,8 +8,8 @@
         >
           <div class="img-container">
             <img
-              v-if="article.articleImg"
-              :src="`data:image/jpeg;base64,${article.articleImg}`"
+              v-if="fullImagePath"
+              :src="fullImagePath"
               class="img-fluid"
               alt="Article Image"
             />
@@ -20,7 +20,6 @@
         <div class="card-body">
           <div class="date-category">
             <p>{{ article.articleDate }}</p>
-            <!-- 移除 router-link 的默认样式，添加自定义样式 -->
             <router-link
               :to="`/home/articles/classes/${article.articleClass.articleClassId}`"
               class="custom-link"
@@ -32,9 +31,12 @@
             :to="`/home/articlesDetails/${article.articleId}`"
             class="custom-link"
           >
-            <p class="article-title" style="font-size:xx-large;">{{ article.articleTitle }}</p>
+            <p class="article-title" style="font-size: xx-large">
+              {{ article.articleTitle }}
+            </p>
           </router-link>
-          <p  style="max-height: 15vh;"
+          <p
+            style="max-height: 15vh"
             class="card-text content article-content"
             v-html="article.articleContent"
           ></p>
@@ -45,11 +47,17 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps,computed } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const props = defineProps(["article"]);
+
+const imageUrl = import.meta.env.VITE_API_SERVERURL;
+
+const fullImagePath = computed(() => {
+  return `${imageUrl}${props.article.articleThumbnailImagePath}`;
+});
 
 // const truncateContent = (content, maxLength) => {
 //   if (content.length > maxLength) {

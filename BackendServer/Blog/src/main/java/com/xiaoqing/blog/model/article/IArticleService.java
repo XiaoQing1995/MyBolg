@@ -6,25 +6,25 @@ import org.springframework.data.domain.Pageable;
 public interface IArticleService {
 
 	// 新建文章
-	void createsArticle(Article article);
+	public boolean createsArticle(ArticleDTO ArticleDTO);
 
-	// 取得所有文章Dto By Pageable，根據分頁信息返回文章Dto的分頁結果
-	Page<ArticleDto> getArticleDtos(Pageable pageable);
+	// 取得所有文章DTO By Pageable，根據分頁信息返回文章DTO的分頁結果
+//	public Page<ArticleDTO> getArticleDTOs(Pageable pageable);
 	
-	Page<Article> getArticles(Pageable pageable);
+	public Page<Article> getArticles(Pageable pageable);
 
 	// 取得文章 ById，依照文章ID返回文章
-	Article getArticlesById(int id);
+	public Article getArticlesById(int id);
 
-	// 取得特定種類所有文章Dto By ArticleClassId Pageable，根據文章種類的ID及分頁信息返回文章Dto的分頁結果
-	Page<ArticleDto> getArticlesDtosByArticleClassId(int id, Pageable pageable);
+	// 取得特定種類所有文章DTO By ArticleClassId Pageable，根據文章種類的ID及分頁信息返回文章DTO的分頁結果
+//	public Page<ArticleDTO> getArticlesDtosByArticleClassId(int id, Pageable pageable);
 	
-	Page<Article> getArticlesByArticleClassId(int id, Pageable pageable);
+	public Page<Article> getArticlesByArticleClassId(int id, Pageable pageable);
 
 	// 更新文章
-	void updatesArticles(Article article);
+	public boolean updatesArticles(ArticleDTO articleDTO);
 
 	// 刪除文章 ById，依照文章ID刪除文章
-	void deletesArticlesById(int id);
+	public boolean deletesArticlesById(int id);
 
 }

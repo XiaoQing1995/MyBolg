@@ -77,14 +77,14 @@
         <button type="button" class="btn btn-secondary me-2" @click="cancelUpdate">
           取消
         </button>
-        <button type="submit" class="btn btn-primary" @click="updateArticle">儲存</button>
+        <button type="button" class="btn btn-primary" @click="updateArticle">儲存</button>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { apiGet, apiUpdate } from "@/api/api";
 import { useRouter, useRoute } from "vue-router";
 import { whenErrorCheckHttpStatus } from "@/plugin/httpErrorPlugin";
@@ -97,12 +97,15 @@ const route = useRoute();
 
 const urlPathArticles = "/v1/articles";
 const urlPathArticleClasses = "/v1/articleclasses";
+const imageUrl = import.meta.env.VITE_API_SERVERURL;
 
 const article = ref({
   articleId: "",
   articleTitle: "",
   articleContent: "",
-  articleImg: null,
+  articleImagePath: "",
+  articleThumbnailImagePath: "",
+  articleFile: "",
   articleDate: "",
   articleClass: {
     articleClassId: "",
@@ -117,7 +120,8 @@ const getArticleDetails = async (articleId) => {
   try {
     const response = await apiGet(`${urlPathArticles}/${articleId}`, router);
     article.value = response.data;
-    imagePreview.value = `data:image/jpeg;base64,${article.value.articleImg}`;
+    imagePreview.value = `${imageUrl}${article.value.articleImagePath}`;
+    console.log(article.value);
   } catch (error) {
     whenErrorCheckHttpStatus(error, router);
   }
@@ -139,23 +143,38 @@ const fetchCategoryOptions = async () => {
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
   if (file) {
-    // 讀取並轉換為 base64
-    const reader = new FileReader();
-    reader.onload = () => {
-      article.value.articleImg = getBase64String(reader.result);
-      imagePreview.value = reader.result; // 設定預覽圖片
-    };
-    reader.readAsDataURL(file);
+    imagePreview.value = URL.createObjectURL(file); // 使用文件的 URL 用于本地预览
+
+    // 将文件对象存储到 Vue 实例中，用于后续上传
+    article.value.articleFile = file;
   }
 };
 
-// 這個函數將 base64 字符串轉換為不包含類型信息的部分
-const getBase64String = (base64Data) => {
-  return base64Data.split(";base64,")[1];
-};
-
 const updateArticle = async () => {
-  const response = await apiUpdate(urlPathArticles, article.value, router);
+  Swal.fire({
+    title: "修改中",
+    html: "請稍等，正在處理中",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  const formData = new FormData();
+  formData.append("articleId", article.value.articleId);
+  formData.append("articleTitle", article.value.articleTitle);
+  formData.append("articleContent", article.value.articleContent);
+  formData.append("articleImagePath", article.value.articleImagePath);
+  formData.append("articleThumbnailImagePath", article.value.articleThumbnailImagePath);
+  formData.append("articleDate", article.value.articleDate);
+  formData.append("articleClassId", article.value.articleClass.articleClassId);
+
+  if (article.value.articleFile) {
+    console.log("articleFile");
+    formData.append("articleFile", article.value.articleFile);
+  }
+
+  const response = await apiUpdate(urlPathArticles, formData, router);
   const httpStatus = response.status;
   if (httpStatus == 200) {
     Swal.fire({

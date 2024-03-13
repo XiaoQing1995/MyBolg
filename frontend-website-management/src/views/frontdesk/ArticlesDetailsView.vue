@@ -15,17 +15,17 @@
       </div>
     </div>
     <img
-      v-if="article.articleImg"
-      :src="`data:image/jpeg;base64,${article.articleImg}`"
+      v-if="fullImagePath"
+      :src="fullImagePath"
+      class="img-fluid"
       alt="Article Image"
-      class="article-image"
     />
     <div class="article-content" v-html="article.articleContent"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { apiGetForFrontDeskUse } from "@/api/api";
 import { URL_PATH_ARTICLES } from "@/stores/urlPath";
@@ -35,8 +35,17 @@ const route = useRoute();
 const router = useRouter();
 const article = ref(null);
 
+const imageUrl = import.meta.env.VITE_API_SERVERURL;
+
+const fullImagePath = computed(() => {
+  return `${imageUrl}${article.value.articleImagePath}`;
+});
+
 const getArticle = async () => {
-  const response = await apiGetForFrontDeskUse(`${URL_PATH_ARTICLES}/${articleId.value}`, router);
+  const response = await apiGetForFrontDeskUse(
+    `${URL_PATH_ARTICLES}/${articleId.value}`,
+    router
+  );
   article.value = response.data;
 };
 

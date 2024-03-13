@@ -19,12 +19,12 @@
     />
 
     <!-- Bootstrap 分頁元件 -->
-    <Page :currentPage="currentPage" :totalPages="totalPages" :changePage="changePage" />
+    <Page v-if="showPage" :currentPage="currentPage" :totalPages="totalPages" :changePage="changePage" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,nextTick } from "vue";
 import { apiGet } from "@/api/api";
 import { useRouter } from "vue-router";
 import ArticleItem from "@/components/backstage/ArticleItem.vue";
@@ -41,6 +41,8 @@ const pageSize = 10; // 每頁顯示的文章數量
 
 const categoryOptions = ref([]);
 const selectedCategory = ref("0");
+
+const showPage = ref(false);
 
 onMounted(() => {
   getArticles();
@@ -65,10 +67,10 @@ const getArticles = async () => {
     );
   }
 
-  console.log(response);
   articles.value = response.data.content;
   totalPages.value = response.data.totalPages;
-  // paginatedArticles.value = articles.value;
+
+  showPageWhenDOMRender()
 };
 
 const refreshViewGetArticles = () => {
@@ -91,5 +93,11 @@ const filterByCategory = () => {
   console.log(selectedCategory.value);
   currentPage.value = 1;
   getArticles();
+};
+
+const showPageWhenDOMRender = () => {
+  nextTick(() => {
+    showPage.value = true;
+  });
 };
 </script>

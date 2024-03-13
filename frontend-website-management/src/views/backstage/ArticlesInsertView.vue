@@ -17,11 +17,7 @@
       <!-- 文章分類，下拉式選單 -->
       <div class="mb-3">
         <label for="category" class="form-label">文章分類</label>
-        <select
-          class="form-select"
-          v-model="article.articleClass.articleClassId"
-          id="category"
-        >
+        <select class="form-select" v-model="article.articleClassId" id="category">
           <option
             v-for="categoryOption in categoryOptions"
             :key="categoryOption.articleClassId"
@@ -99,11 +95,9 @@ const urlPathArticleClass = "/v1/articleclasses";
 const article = ref({
   articleTitle: "",
   articleContent: "",
-  articleImg: null,
   articleDate: "",
-  articleClass: {
-    articleClassId: "",
-  },
+  articleFile: "",
+  articleClassId: "",
 });
 
 const categoryOptions = ref([]);
@@ -126,19 +120,33 @@ const fetchCategoryOptions = async () => {
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
   if (file) {
-    // 讀取並轉換為 base64
-    const reader = new FileReader();
-    reader.onload = () => {
-      article.value.articleImg = getBase64String(reader.result);
-      imagePreview.value = reader.result; // 設定預覽圖片
-    };
-    reader.readAsDataURL(file);
+    imagePreview.value = URL.createObjectURL(file); // 使用文件的 URL 用于本地预览
+
+    // 将文件对象存储到 Vue 实例中，用于后续上传
+    article.value.articleFile = file;
   }
 };
 
 const insertArticles = async () => {
+  Swal.fire({
+    title: "新增中",
+    html: "請稍等，正在處理中",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
   article.value.articleDate = new Date().toISOString().split("T")[0];
-  const response = await apiPost(urlPathArticle, article.value, router);
+
+  const formData = new FormData();
+  formData.append("articleTitle", article.value.articleTitle);
+  formData.append("articleContent", article.value.articleContent);
+  formData.append("articleDate", article.value.articleDate);
+  formData.append("articleClassId", article.value.articleClassId);
+  formData.append("articleFile", article.value.articleFile);
+
+  const response = await apiPost(urlPathArticle, formData, router);
   const httpStatus = response.status;
   if (httpStatus == 200) {
     Swal.fire({
@@ -155,21 +163,16 @@ const resetArticles = () => {
   article.value = {
     articleTitle: "",
     aritcleContent: "",
-    articleImg: null,
-    category: "",
+    articleFile: "",
+    articleClassId: "",
   };
   imagePreview.value = null;
   const imageInput = document.getElementById("image");
   if (imageInput) {
     imageInput.value = null;
   }
-  // 取消按鈕的處理邏輯，例如返回上一頁或導向列表頁面
 };
 
-// 這個函數將 base64 字符串轉換為不包含類型信息的部分
-const getBase64String = (base64Data) => {
-  return base64Data.split(";base64,")[1];
-};
 
 onMounted(async () => {
   await fetchCategoryOptions();

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { whenErrorCheckHttpStatus, whenErrorCheckHttpStatusForFrontDeskUse } from '@/plugin/httpErrorPlugin'
-const host = import.meta.env.VITE_API_JAVAURL
+const host = import.meta.env.VITE_API_APIURL
 
 async function login(path, userDetails) {
   try {

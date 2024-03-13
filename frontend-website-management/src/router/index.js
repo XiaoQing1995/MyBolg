@@ -79,6 +79,16 @@ const router = createRouter({
         },
       ]
     },
+    {
+      path: '/imageUploadTest',
+      name: 'imageUploadTest',
+      component: () => import('../views/backstage/ImageUploadTestView.vue')
+    },
+    {
+      path: '/imageDownloadTest',
+      name: 'imageDownloadTest',
+      component: () => import('../views/backstage/ImageDownloadTestView.vue')
+    },
   ]
 })
 
