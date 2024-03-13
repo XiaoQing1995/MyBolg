@@ -48,9 +48,6 @@ public class ArticleController {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "articleId"));
 		Page<Article> article = articleService.getArticles(pageable);
 		return new ResponseEntity<>(article, HttpStatus.OK);
-
-//		Page<ArticleDto> articleDtos = articleService.getArticleDtos(pageable);
-//		return new ResponseEntity<>(articleDtos, HttpStatus.OK);
 	}
 
 	// 取得文章 ById，依照文章ID返回文章
