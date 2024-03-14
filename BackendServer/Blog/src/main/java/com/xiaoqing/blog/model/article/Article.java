@@ -32,10 +32,6 @@ public class Article {
 	private String articleImagePath;
 	private String articleThumbnailImagePath;
 	
-//	@Column(name = "articleclass_id")
-//	private int articleclass_id;
-	
-	
 	@ManyToOne
 	@JoinColumn(name = "articleClassId")
 	private ArticleClass articleClass;

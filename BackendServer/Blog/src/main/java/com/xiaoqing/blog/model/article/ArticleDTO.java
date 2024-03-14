@@ -2,7 +2,6 @@ package com.xiaoqing.blog.model.article;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.xiaoqing.blog.model.articleclass.ArticleClass;
 
 import lombok.Builder;
 import lombok.Data;

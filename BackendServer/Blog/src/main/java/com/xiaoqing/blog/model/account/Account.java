@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xiaoqing.blog.model.role.Role;
 
 import jakarta.persistence.Entity;
@@ -29,6 +28,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Account")
 public class Account implements UserDetails {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

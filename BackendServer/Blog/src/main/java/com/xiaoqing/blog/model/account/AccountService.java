@@ -18,18 +18,18 @@ public class AccountService implements IAccountService {
 	private final AccountRepository accountRepository;
 
 	private final PasswordEncoder passwordEncoder;
-
-//	@Override
-//	public boolean createAccount(Account account) {
-//		if (accountRepository.findByAccountNumber(account.getAccountNumber()).isEmpty()) {
-//			Account user = Account.builder().accountNumber(account.getAccountNumber())
-//					.accountPassword(passwordEncoder.encode(account.getAccountPassword())).role(account.getRole())
-//					.build();
-//			accountRepository.save(user);
-//			return true;
-//		}
-//		return false;
-//	}
+	
+	@Override
+	public boolean createAccount(Account account) {
+		if (accountRepository.findByAccountNumber(account.getAccountNumber()).isEmpty()) {
+			var user = Account.builder().accountNumber(account.getAccountNumber())
+					.accountPassword(passwordEncoder.encode(account.getAccountPassword())).role(account.getRole())
+					.build();
+			accountRepository.save(user);
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public Page<Account> getAccounts(Pageable pageable) {

@@ -1,24 +1,17 @@
 package com.xiaoqing.blog.model.article;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Optional;
-import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.xiaoqing.blog.image.IImageService;
 import com.xiaoqing.blog.model.articleclass.ArticleClass;
 
 import lombok.RequiredArgsConstructor;
-import net.coobird.thumbnailator.Thumbnails;
 
 @Service
 @Transactional
@@ -26,17 +19,14 @@ import net.coobird.thumbnailator.Thumbnails;
 public class ArticleService implements IArticleService {
 
 	private final ArticleRepository articleRepository;
-
-	@Value("${upload-dir}")
-	private String UPLOAD_DIR;
-
-	private String originalImagePath;
-	private String thumbnailImagePath;
+	private final IImageService imageService;
 
 	@Override
 	public boolean createArticle(ArticleDTO articleDTO) {
 		try {
-			saveImage(articleDTO.getArticleFile());
+			String[] imagePaths = imageService.saveImage(articleDTO.getArticleFile());
+			String originalImagePath = imagePaths[0]; // 原始圖片路徑
+			String thumbnailImagePath = imagePaths[1]; // 縮略圖圖片路徑
 
 			articleRepository.save(Article.builder().articleTitle(articleDTO.getArticleTitle())
 					.articleContent(articleDTO.getArticleContent()).articleDate(articleDTO.getArticleDate())
@@ -63,7 +53,6 @@ public class ArticleService implements IArticleService {
 			return optionalArticle.get();
 		}
 		return null;
-
 	}
 
 	@Override
@@ -76,14 +65,16 @@ public class ArticleService implements IArticleService {
 	public boolean updateArticle(ArticleDTO articleDTO) {
 		try {
 			if (articleDTO.getArticleFile() != null) {
-				saveImage(articleDTO.getArticleFile());
+				String[] imagePaths = imageService.saveImage(articleDTO.getArticleFile());
+				String originalImagePath = imagePaths[0]; // 原始圖片路徑
+				String thumbnailImagePath = imagePaths[1]; // 縮略圖圖片路徑
 				articleRepository.save(Article.builder().articleId(articleDTO.getArticleId())
 						.articleTitle(articleDTO.getArticleTitle()).articleContent(articleDTO.getArticleContent())
 						.articleDate(articleDTO.getArticleDate())
 						.articleClass(ArticleClass.builder().articleClassId(articleDTO.getArticleClassId()).build())
 						.articleImagePath(originalImagePath).articleThumbnailImagePath(thumbnailImagePath).build());
-				deleteOldImage(articleDTO.getArticleImagePath());
-				deleteOldImage(articleDTO.getArticleThumbnailImagePath());
+				imageService.deleteOldImage(articleDTO.getArticleImagePath());
+				imageService.deleteOldImage(articleDTO.getArticleThumbnailImagePath());
 			} else {
 				articleRepository.save(Article.builder().articleId(articleDTO.getArticleId())
 						.articleTitle(articleDTO.getArticleTitle()).articleContent(articleDTO.getArticleContent())
@@ -102,53 +93,12 @@ public class ArticleService implements IArticleService {
 	@Override
 	public void deleteArticleById(int id) {
 		Optional<Article> article = articleRepository.findById(id);
-
-		deleteOldImage(article.get().getArticleImagePath());
-		deleteOldImage(article.get().getArticleThumbnailImagePath());
-
+		
 		articleRepository.deleteById(id);
-	}
 
-	private void saveImage(MultipartFile file) throws IOException {
+		imageService.deleteOldImage(article.get().getArticleImagePath());
+		imageService.deleteOldImage(article.get().getArticleThumbnailImagePath());
 
-		Path uploadPath = Paths.get(UPLOAD_DIR);
-		if (!Files.exists(uploadPath)) {
-			Files.createDirectories(uploadPath);
-		}
-
-		String fileExtension = getFileExtension(file.getOriginalFilename());
-		String uniqueFileName = UUID.randomUUID().toString();
-		String originalFileName = uniqueFileName + "." + fileExtension;
-		String thumbnailFileName = uniqueFileName + "_thumb." + fileExtension;
-
-		Path originalFilePath = uploadPath.resolve(originalFileName);
-		file.transferTo(originalFilePath.toFile());
-
-		Path thumbnailPath = uploadPath.resolve(thumbnailFileName);
-		Thumbnails.of(originalFilePath.toFile()).size(200, 200).toFile(thumbnailPath.toFile());
-
-		originalImagePath = "/" + originalFileName;
-		thumbnailImagePath = "/" + thumbnailFileName;
-
-	}
-
-	private void deleteOldImage(String imagePath) {
-		Path path = Paths.get(UPLOAD_DIR + imagePath);
-		System.out.println(UPLOAD_DIR + imagePath);
-		try {
-			Files.deleteIfExists(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-			// 可以记录日志或者做其他错误处理
-		}
-	}
-
-	private String getFileExtension(String fileName) {
-		if (fileName == null) {
-			return null;
-		}
-		int dotIndex = fileName.lastIndexOf(".");
-		return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
 	}
 
 }

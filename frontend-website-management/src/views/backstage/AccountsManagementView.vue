@@ -28,7 +28,6 @@ import Page from "@/components/unit/Page.vue";
 
 const urlPathAccounts = "/v1/accounts";
 const urlPathRoles = "/v1/roles";
-const urlPathAuthentication = "/v1/auth";
 
 // const account = ref([]);
 const accounts = ref([]);
@@ -85,7 +84,7 @@ const insertAccount = async () => {
   if (formValues) {
     const { accountNumber, accountPassword, role } = formValues;
 
-    const newAccount = {
+    const account = {
       accountNumber: accountNumber,
       accountPassword: accountPassword,
       role: role,
@@ -93,8 +92,8 @@ const insertAccount = async () => {
 
     try {
       const response = await apiPost(
-        `${urlPathAuthentication}/register`,
-        newAccount,
+        `${urlPathAccounts}`,
+        account,
         router
       );
       const httpStatus = response.status;
