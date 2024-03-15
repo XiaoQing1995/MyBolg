@@ -83,7 +83,9 @@ const insertAccount = async () => {
 
   if (formValues) {
     const { accountNumber, accountPassword, role } = formValues;
-
+    if (!validateAccount(accountNumber, accountPassword, role)) {
+      return;
+    }
     const account = {
       accountNumber: accountNumber,
       accountPassword: accountPassword,
@@ -130,5 +132,13 @@ const showPageWhenDOMRender = () => {
   nextTick(() => {
     showPage.value = true;
   });
+};
+
+const validateAccount = (accountNumber, accountPassword, role) => {
+  if (!accountNumber.trim() || !accountPassword.trim() || !role.trim()) {
+    Swal.fire("錯誤", "請填寫所有欄位", "error");
+    return false;
+  }
+  return true;
 };
 </script>

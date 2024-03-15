@@ -45,6 +45,17 @@
         style="width: 300px; height: 200px; object-fit: contain"
       />
 
+      <!-- 概要內容 -->
+      <div class="mb-3">
+        <label for="summaryContent" class="form-label">概要內容</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="article.articleSummaryContent"
+          required
+        />
+      </div>
+
       <!-- 文章內容，使用 vue-quill-editor -->
       <div class="mb-3">
         <label for="content" class="form-label">文章內容</label>
@@ -102,6 +113,7 @@ const imageUrl = import.meta.env.VITE_API_SERVERURL;
 const article = ref({
   articleId: "",
   articleTitle: "",
+  articleSummaryContent: "",
   articleContent: "",
   articleImagePath: "",
   articleThumbnailImagePath: "",
@@ -151,6 +163,9 @@ const handleImageUpload = (event) => {
 };
 
 const updateArticle = async () => {
+  if (!validateArticleData()) {
+    return;
+  }
   Swal.fire({
     title: "修改中",
     html: "請稍等，正在處理中",
@@ -163,6 +178,7 @@ const updateArticle = async () => {
   const formData = new FormData();
   formData.append("articleId", article.value.articleId);
   formData.append("articleTitle", article.value.articleTitle);
+  formData.append("articleSummaryContent", article.value.articleSummaryContent);
   formData.append("articleContent", article.value.articleContent);
   formData.append("articleImagePath", article.value.articleImagePath);
   formData.append("articleThumbnailImagePath", article.value.articleThumbnailImagePath);
@@ -196,6 +212,18 @@ onMounted(() => {
   getArticleDetails(articleId.value);
   fetchCategoryOptions();
 });
+
+const validateArticleData = () => {
+  if (!article.value.articleTitle.trim() ||
+      !article.value.articleContent.trim() ||
+      !article.value.articleClass.articleClassId ||
+      !article.value.articleSummaryContent.trim() ) {
+    Swal.fire("錯誤", "請填寫所有欄位", "error");
+    return false;
+  }
+  // 添加更多的验证逻辑根据需要
+  return true;
+};
 </script>
 
 <style>

@@ -38,8 +38,7 @@
           <p
             style="max-height: 15vh"
             class="card-text content article-content"
-            v-html="article.articleContent"
-          ></p>
+          > {{ article.articleSummaryContent }}</p>
         </div>
       </div>
     </div>

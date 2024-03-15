@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoqing.blog.model.article.Article;
 import com.xiaoqing.blog.model.article.ArticleDTO;
+import com.xiaoqing.blog.model.article.ArticleSummary;
 import com.xiaoqing.blog.model.article.IArticleService;
 
 import lombok.RequiredArgsConstructor;
@@ -43,8 +44,8 @@ public class ArticleController {
 	public ResponseEntity<?> getArticles(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "articleId"));
-		Page<Article> article = articleService.getArticles(pageable);
-		return new ResponseEntity<>(article, HttpStatus.OK);
+		Page<ArticleSummary> articles = articleService.getArticles(pageable);
+		return new ResponseEntity<>(articles, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
@@ -61,9 +62,8 @@ public class ArticleController {
 			@RequestParam(defaultValue = "10") int size, @PathVariable("id") int id) {
 		System.out.println("class");
 		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "articleId"));
-//		Page<ArticleDto> articleDtos = articleService.getArticlesByArticleClassId(id, pageable);
-		Page<Article> article = articleService.getArticlesByArticleClassId(id, pageable);
-		return new ResponseEntity<>(article, HttpStatus.OK);
+		Page<ArticleSummary> articles = articleService.getArticlesByArticleClassId(id, pageable);
+		return new ResponseEntity<>(articles, HttpStatus.OK);
 	}
 
 	@PutMapping

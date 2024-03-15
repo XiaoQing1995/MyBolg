@@ -7,11 +7,11 @@ public interface IArticleService {
 
 	boolean createArticle(ArticleDTO ArticleDTO);
 	
-	Page<Article> getArticles(Pageable pageable);
+	Page<ArticleSummary> getArticles(Pageable pageable);
 
 	Article getArticleById(int id);
 	
-	Page<Article> getArticlesByArticleClassId(int id, Pageable pageable);
+	Page<ArticleSummary> getArticlesByArticleClassId(int id, Pageable pageable);
 
 	boolean updateArticle(ArticleDTO articleDTO);
 

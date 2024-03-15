@@ -40,6 +40,17 @@
         style="width: 300px; height: 200px; object-fit: contain"
       />
 
+      <!-- 概要內容 -->
+      <div class="mb-3">
+        <label for="summaryContent" class="form-label">概要內容</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="article.articleSummaryContent"
+          required
+        />
+      </div>
+
       <!-- 文章內容，使用 vue-quill-editor -->
       <div class="mb-3">
         <label for="content" class="form-label">文章內容</label>
@@ -94,6 +105,7 @@ const urlPathArticleClass = "/v1/articleclasses";
 
 const article = ref({
   articleTitle: "",
+  articleSummaryContent: "",
   articleContent: "",
   articleDate: "",
   articleFile: "",
@@ -128,6 +140,9 @@ const handleImageUpload = (event) => {
 };
 
 const insertArticles = async () => {
+  if (!validateArticle()) {
+    return;
+  }
   Swal.fire({
     title: "新增中",
     html: "請稍等，正在處理中",
@@ -141,6 +156,7 @@ const insertArticles = async () => {
 
   const formData = new FormData();
   formData.append("articleTitle", article.value.articleTitle);
+  formData.append("articleSummaryContent", article.value.articleSummaryContent);
   formData.append("articleContent", article.value.articleContent);
   formData.append("articleDate", article.value.articleDate);
   formData.append("articleClassId", article.value.articleClassId);
@@ -162,7 +178,7 @@ const insertArticles = async () => {
 const resetArticles = () => {
   article.value = {
     articleTitle: "",
-    aritcleContent: "",
+    articleContent: "",
     articleFile: "",
     articleClassId: "",
   };
@@ -177,6 +193,18 @@ const resetArticles = () => {
 onMounted(async () => {
   await fetchCategoryOptions();
 });
+
+const validateArticle = () => {
+  if (!article.value.articleTitle.trim() || 
+  !article.value.articleSummaryContent.trim() ||
+  !article.value.articleContent.trim() || 
+  !article.value.articleClassId|| 
+  !article.value.articleFile) {
+    Swal.fire("錯誤", "請填寫所有欄位", "error");
+    return false;
+  }
+  return true;
+};
 </script>
 
 <style>

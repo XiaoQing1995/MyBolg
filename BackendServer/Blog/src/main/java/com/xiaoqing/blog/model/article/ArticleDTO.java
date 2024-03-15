@@ -12,6 +12,7 @@ import lombok.Data;
 public class ArticleDTO {
 	private Integer articleId;
 	private String articleTitle;
+	private String articleSummaryContent;
 	private String articleContent;
 	private String articleDate;
 	private String articleImagePath;

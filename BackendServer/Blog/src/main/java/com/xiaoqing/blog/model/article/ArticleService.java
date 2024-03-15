@@ -28,10 +28,16 @@ public class ArticleService implements IArticleService {
 			String originalImagePath = imagePaths[0]; // 原始圖片路徑
 			String thumbnailImagePath = imagePaths[1]; // 縮略圖圖片路徑
 
-			articleRepository.save(Article.builder().articleTitle(articleDTO.getArticleTitle())
-					.articleContent(articleDTO.getArticleContent()).articleDate(articleDTO.getArticleDate())
-					.articleClass(ArticleClass.builder().articleClassId(articleDTO.getArticleClassId()).build())
-					.articleImagePath(originalImagePath).articleThumbnailImagePath(thumbnailImagePath).build());
+			articleRepository.save(Article.builder()
+					.articleTitle(articleDTO.getArticleTitle())
+					.articleSummaryContent(articleDTO.getArticleSummaryContent())
+					.articleContent(articleDTO.getArticleContent())
+					.articleDate(articleDTO.getArticleDate())
+					.articleClass(ArticleClass.builder()
+							.articleClassId(articleDTO.getArticleClassId())
+							.build())
+					.articleImagePath(originalImagePath)
+					.articleThumbnailImagePath(thumbnailImagePath).build());
 
 			return true;
 		} catch (Exception e) {
@@ -41,8 +47,8 @@ public class ArticleService implements IArticleService {
 	}
 
 	@Override
-	public Page<Article> getArticles(Pageable pageable) {
-		Page<Article> articles = articleRepository.findAll(pageable);
+	public Page<ArticleSummary> getArticles(Pageable pageable) {
+		Page<ArticleSummary> articles = articleRepository.findAllBy(pageable);
 		return articles;
 	}
 
@@ -56,8 +62,8 @@ public class ArticleService implements IArticleService {
 	}
 
 	@Override
-	public Page<Article> getArticlesByArticleClassId(int id, Pageable pageable) {
-		Page<Article> articles = articleRepository.findByArticleClass_ArticleClassId(id, pageable);
+	public Page<ArticleSummary> getArticlesByArticleClassId(int id, Pageable pageable) {
+		Page<ArticleSummary> articles = articleRepository.findByArticleClass_ArticleClassId(id, pageable);
 		return articles;
 	}
 
@@ -68,18 +74,29 @@ public class ArticleService implements IArticleService {
 				String[] imagePaths = imageService.saveImage(articleDTO.getArticleFile());
 				String originalImagePath = imagePaths[0]; // 原始圖片路徑
 				String thumbnailImagePath = imagePaths[1]; // 縮略圖圖片路徑
-				articleRepository.save(Article.builder().articleId(articleDTO.getArticleId())
-						.articleTitle(articleDTO.getArticleTitle()).articleContent(articleDTO.getArticleContent())
+				articleRepository.save(Article.builder()
+						.articleId(articleDTO.getArticleId())
+						.articleTitle(articleDTO.getArticleTitle())
+						.articleSummaryContent(articleDTO.getArticleSummaryContent())
+						.articleContent(articleDTO.getArticleContent())
 						.articleDate(articleDTO.getArticleDate())
-						.articleClass(ArticleClass.builder().articleClassId(articleDTO.getArticleClassId()).build())
-						.articleImagePath(originalImagePath).articleThumbnailImagePath(thumbnailImagePath).build());
+						.articleClass(ArticleClass.builder()
+								.articleClassId(articleDTO.getArticleClassId())
+								.build())
+						.articleImagePath(originalImagePath)
+						.articleThumbnailImagePath(thumbnailImagePath).build());
 				imageService.deleteOldImage(articleDTO.getArticleImagePath());
 				imageService.deleteOldImage(articleDTO.getArticleThumbnailImagePath());
 			} else {
-				articleRepository.save(Article.builder().articleId(articleDTO.getArticleId())
-						.articleTitle(articleDTO.getArticleTitle()).articleContent(articleDTO.getArticleContent())
+				articleRepository.save(Article.builder()
+						.articleId(articleDTO.getArticleId())
+						.articleTitle(articleDTO.getArticleTitle())
+						.articleSummaryContent(articleDTO.getArticleSummaryContent())
+						.articleContent(articleDTO.getArticleContent())
 						.articleDate(articleDTO.getArticleDate())
-						.articleClass(ArticleClass.builder().articleClassId(articleDTO.getArticleClassId()).build())
+						.articleClass(ArticleClass.builder()
+								.articleClassId(articleDTO.getArticleClassId())
+								.build())
 						.articleImagePath(articleDTO.getArticleImagePath())
 						.articleThumbnailImagePath(articleDTO.getArticleThumbnailImagePath()).build());
 			}

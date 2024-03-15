@@ -46,6 +46,9 @@ const insertArticleClass = () => {
     if (result.isConfirmed) {
       // 在這裡處理使用者按下確定後的邏輯
       const enteredValue = result.value;
+      if (!validateArticleClass(enteredValue)) {
+        return;
+      }
       const insertArticleClass = ref({
         articleClassName: enteredValue,
       });
@@ -67,4 +70,12 @@ const insertArticleClass = () => {
 onMounted(async () => {
   getArticleClasses();
 });
+
+const validateArticleClass = (articleClassName) => {
+  if (!articleClassName.trim()) {
+    Swal.fire("錯誤", "請填寫所有欄位", "error");
+    return false;
+  }
+  return true;
+};
 </script>
