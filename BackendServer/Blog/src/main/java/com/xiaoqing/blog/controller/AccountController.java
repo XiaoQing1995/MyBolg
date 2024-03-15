@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/accounts")
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin("https://happy-meadow-001df7a00.5.azurestaticapps.net")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AccountController {
 	private final IAccountService accountService;

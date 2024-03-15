@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin("https://happy-meadow-001df7a00.5.azurestaticapps.net")
 public class AuthenticationController {
 
 	private final AuthenticationService service;

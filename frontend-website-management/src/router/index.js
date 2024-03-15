@@ -5,8 +5,14 @@ const router = createRouter({
   routes: [
     {
       path:'/',
-      name:'frontPage',
+      serve: "/index.html",
+      statusCode:200,
       redirect: '/home/articles'
+    },
+    {
+      "navigationFallback": {
+        "rewrite": "/index.html"
+      }
     },
     {
       path: '/home',

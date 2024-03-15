@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/articleclasses")
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin("https://happy-meadow-001df7a00.5.azurestaticapps.net")
 public class ArticleClassController {
 
 	private final IArticleClassService articleClassService;
