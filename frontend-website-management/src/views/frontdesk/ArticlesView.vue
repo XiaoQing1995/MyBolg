@@ -51,14 +51,12 @@ onMounted(() => {
 });
 
 const getArticles = async () => {
-  console.log("getArticles");
   const response = await apiGetForFrontDeskUse(
     `${urlPathArticles}?page=${currentPage.value - 1}&size=${pageSize}`,
     router
   );
   articles.value = response.data.content;
   totalPages.value = response.data.totalPages;
-  console.log(articles.value);
   showPageWhenDOMRender()
 };
 
@@ -99,15 +97,12 @@ const fetchCategoryOptions = async () => {
 
 // 當 route 變化時執行
 watchEffect(() => {
-  console.log("watchEffect");
-  console.log(route.name);
   if (route.name === "home.articles") {
     getArticles();
   } else if (
     route.name === "home.articles.classes.id" ||
     route.name === "home.articlesDetails"
   ) {
-    console.log("test");
     getArticlesByClassId();
   }
 });

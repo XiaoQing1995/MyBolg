@@ -31,7 +31,6 @@ async function uploadImage() {
       },
     });
     alert("图片上传成功！");
-    console.log("Uploaded image path:", response.data);
   } catch (error) {
     console.error("图片上传错误：", error);
   }

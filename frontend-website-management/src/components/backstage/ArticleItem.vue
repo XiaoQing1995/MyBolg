@@ -29,15 +29,14 @@
 import { defineProps, defineEmits, computed  } from "vue";
 import { useRouter } from "vue-router";
 import { apiDelete } from "@/api/api";
-import { whenErrorCheckHttpStatus } from "@/plugin/httpErrorPlugin";
 import Swal from "sweetalert2";
 const router = useRouter();
 
 const pathUrl = "/v1/articles"
-const imageUrl = import.meta.env.VITE_API_SERVERURL;
+const imageUrl = import.meta.env.VITE_API_AZURE_BLOB_STORAGE;
 
 const fullImagePath = computed(() => {
-  return `${imageUrl}${props.article.articleThumbnailImagePath}`;
+  return `${imageUrl}${props.article.articleThumbnailImage}`;
 });
 
 const props = defineProps(["article"]);

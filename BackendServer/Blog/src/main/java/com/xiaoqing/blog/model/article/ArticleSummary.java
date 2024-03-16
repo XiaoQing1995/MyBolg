@@ -8,6 +8,6 @@ public interface ArticleSummary {
 	String getArticleTitle();
 	String getArticleSummaryContent();
 	String getArticleDate();
-	String getArticleThumbnailImagePath();
+	String getArticleThumbnailImage();
 	ArticleClass getArticleClass();
 }

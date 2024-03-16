@@ -52,10 +52,10 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const props = defineProps(["article"]);
 
-const imageUrl = import.meta.env.VITE_API_SERVERURL;
+const imageUrl = import.meta.env.VITE_API_AZURE_BLOB_STORAGE;
 
 const fullImagePath = computed(() => {
-  return `${imageUrl}${props.article.articleThumbnailImagePath}`;
+  return `${imageUrl}${props.article.articleThumbnailImage}`;
 });
 
 // const truncateContent = (content, maxLength) => {

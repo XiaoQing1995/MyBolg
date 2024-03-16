@@ -15,8 +15,8 @@ public class ArticleDTO {
 	private String articleSummaryContent;
 	private String articleContent;
 	private String articleDate;
-	private String articleImagePath;
-	private String articleThumbnailImagePath;
+	private String articleOriginalImage;
+	private String articleThumbnailImage;
 	private MultipartFile  articleFile;
 	private Integer articleClassId;
 }

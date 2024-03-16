@@ -119,7 +119,6 @@ const imagePreview = ref(null);
 const fetchCategoryOptions = async () => {
   try {
     const response = await apiGet(urlPathArticleClass, router);
-    console.log(response.data);
     categoryOptions.value = response.data;
   } catch (error) {
     const httpStatus = error.response?.status;

@@ -42,7 +42,6 @@ const router = useRouter();
 
 const getAccounts = async () => {
   const response = await apiGet(`${urlPathAccounts}?page=${currentPage.value - 1}&size=${pageSize}`, router);
-  console.log(response.data);
   accounts.value = response.data.content;
   totalPages.value = response.data.totalPages;
   showPageWhenDOMRender();
@@ -99,7 +98,6 @@ const insertAccount = async () => {
         router
       );
       const httpStatus = response.status;
-      console.log(response);
 
       if (httpStatus == 200) {
         Swal.fire({

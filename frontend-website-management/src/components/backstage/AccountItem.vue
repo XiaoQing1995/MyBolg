@@ -39,7 +39,6 @@ props.roles.forEach((role) => {
 });
 
 const updateAccountPassword = async () => {
-  console.log(props.roles[0]);
   const { value: password } = await Swal.fire({
     title: `請設定 ${props.account.accountNumber} 的密碼`,
     input: "password",
@@ -91,7 +90,6 @@ const updateAccountRole = async () => {
         if (updateAccount.role !== "") {
           apiUpdate(urlPathAccount, updateAccount, router)
             .then((response) => {
-              console.log(response);
               const httpStatus = response.status;
               if (httpStatus === 200) {
                 Swal.fire({
@@ -134,7 +132,6 @@ const deleteAccount = async () => {
         router
       );
       const httpStatus = response.status;
-      console.log(httpStatus)
       if (httpStatus == 204) {
         Swal.fire({
           title: "刪除!",

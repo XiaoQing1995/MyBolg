@@ -35,10 +35,10 @@ const route = useRoute();
 const router = useRouter();
 const article = ref(null);
 
-const imageUrl = import.meta.env.VITE_API_SERVERURL;
+const imageUrl = import.meta.env.VITE_API_AZURE_BLOB_STORAGE;
 
 const fullImagePath = computed(() => {
-  return `${imageUrl}${article.value.articleImagePath}`;
+  return `${imageUrl}${article.value.articleOriginalImage}`;
 });
 
 const getArticle = async () => {

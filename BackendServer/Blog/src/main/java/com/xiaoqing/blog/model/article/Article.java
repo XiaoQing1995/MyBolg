@@ -30,8 +30,8 @@ public class Article {
 	private String articleSummaryContent;
 	private String articleContent;
 	private String articleDate;
-	private String articleImagePath;
-	private String articleThumbnailImagePath;
+	private String articleOriginalImage;
+	private String articleThumbnailImage;
 	
 	@ManyToOne
 	@JoinColumn(name = "articleClassId")

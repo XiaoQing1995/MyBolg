@@ -90,7 +90,6 @@ const fetchCategoryOptions = async () => {
 };
 
 const filterByCategory = () => {
-  console.log(selectedCategory.value);
   currentPage.value = 1;
   getArticles();
 };

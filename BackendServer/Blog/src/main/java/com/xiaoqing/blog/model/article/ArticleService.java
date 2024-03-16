@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xiaoqing.blog.azureblob.IAzureBlobService;
 import com.xiaoqing.blog.image.IImageService;
 import com.xiaoqing.blog.model.articleclass.ArticleClass;
 
@@ -19,14 +20,14 @@ import lombok.RequiredArgsConstructor;
 public class ArticleService implements IArticleService {
 
 	private final ArticleRepository articleRepository;
-	private final IImageService imageService;
+	private final IAzureBlobService iAzureBlobService;
 
 	@Override
 	public boolean createArticle(ArticleDTO articleDTO) {
 		try {
-			String[] imagePaths = imageService.saveImage(articleDTO.getArticleFile());
-			String originalImagePath = imagePaths[0]; // 原始圖片路徑
-			String thumbnailImagePath = imagePaths[1]; // 縮略圖圖片路徑
+			String[] imagePaths = iAzureBlobService.upload(articleDTO.getArticleFile());
+			String originalImage = imagePaths[0]; // 原始圖片路徑
+			String thumbnailImage = imagePaths[1]; // 縮略圖圖片路徑
 
 			articleRepository.save(Article.builder()
 					.articleTitle(articleDTO.getArticleTitle())
@@ -36,8 +37,8 @@ public class ArticleService implements IArticleService {
 					.articleClass(ArticleClass.builder()
 							.articleClassId(articleDTO.getArticleClassId())
 							.build())
-					.articleImagePath(originalImagePath)
-					.articleThumbnailImagePath(thumbnailImagePath).build());
+					.articleOriginalImage(originalImage)
+					.articleThumbnailImage(thumbnailImage).build());
 
 			return true;
 		} catch (Exception e) {
@@ -71,9 +72,9 @@ public class ArticleService implements IArticleService {
 	public boolean updateArticle(ArticleDTO articleDTO) {
 		try {
 			if (articleDTO.getArticleFile() != null) {
-				String[] imagePaths = imageService.saveImage(articleDTO.getArticleFile());
-				String originalImagePath = imagePaths[0]; // 原始圖片路徑
-				String thumbnailImagePath = imagePaths[1]; // 縮略圖圖片路徑
+				String[] imagePaths = iAzureBlobService.upload(articleDTO.getArticleFile());
+				String originalImage = imagePaths[0]; // 原始圖片路徑
+				String thumbnailImage = imagePaths[1]; // 縮略圖圖片路徑
 				articleRepository.save(Article.builder()
 						.articleId(articleDTO.getArticleId())
 						.articleTitle(articleDTO.getArticleTitle())
@@ -83,10 +84,10 @@ public class ArticleService implements IArticleService {
 						.articleClass(ArticleClass.builder()
 								.articleClassId(articleDTO.getArticleClassId())
 								.build())
-						.articleImagePath(originalImagePath)
-						.articleThumbnailImagePath(thumbnailImagePath).build());
-				imageService.deleteOldImage(articleDTO.getArticleImagePath());
-				imageService.deleteOldImage(articleDTO.getArticleThumbnailImagePath());
+						.articleOriginalImage(originalImage)
+						.articleThumbnailImage(thumbnailImage).build());
+				iAzureBlobService.deleteBlob(articleDTO.getArticleOriginalImage());
+				iAzureBlobService.deleteBlob(articleDTO.getArticleThumbnailImage());
 			} else {
 				articleRepository.save(Article.builder()
 						.articleId(articleDTO.getArticleId())
@@ -97,8 +98,8 @@ public class ArticleService implements IArticleService {
 						.articleClass(ArticleClass.builder()
 								.articleClassId(articleDTO.getArticleClassId())
 								.build())
-						.articleImagePath(articleDTO.getArticleImagePath())
-						.articleThumbnailImagePath(articleDTO.getArticleThumbnailImagePath()).build());
+						.articleOriginalImage(articleDTO.getArticleOriginalImage())
+						.articleThumbnailImage(articleDTO.getArticleThumbnailImage()).build());
 			}
 
 			return true;
@@ -113,8 +114,8 @@ public class ArticleService implements IArticleService {
 		
 		articleRepository.deleteById(id);
 
-		imageService.deleteOldImage(article.get().getArticleImagePath());
-		imageService.deleteOldImage(article.get().getArticleThumbnailImagePath());
+		iAzureBlobService.deleteBlob(article.get().getArticleOriginalImage());
+		iAzureBlobService.deleteBlob(article.get().getArticleThumbnailImage());
 
 	}
 

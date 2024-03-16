@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { apiGet, apiUpdate } from "@/api/api";
 import { useRouter, useRoute } from "vue-router";
 import { whenErrorCheckHttpStatus } from "@/plugin/httpErrorPlugin";
@@ -108,15 +108,15 @@ const route = useRoute();
 
 const urlPathArticles = "/v1/articles";
 const urlPathArticleClasses = "/v1/articleclasses";
-const imageUrl = import.meta.env.VITE_API_SERVERURL;
+const imageUrl = import.meta.env.VITE_API_AZURE_BLOB_STORAGE;
 
 const article = ref({
   articleId: "",
   articleTitle: "",
   articleSummaryContent: "",
   articleContent: "",
-  articleImagePath: "",
-  articleThumbnailImagePath: "",
+  articleOriginalImage: "",
+  articleThumbnailImage: "",
   articleFile: "",
   articleDate: "",
   articleClass: {
@@ -132,8 +132,7 @@ const getArticleDetails = async (articleId) => {
   try {
     const response = await apiGet(`${urlPathArticles}/${articleId}`, router);
     article.value = response.data;
-    imagePreview.value = `${imageUrl}${article.value.articleImagePath}`;
-    console.log(article.value);
+    imagePreview.value = `${imageUrl}${article.value.articleOriginalImage}`;
   } catch (error) {
     whenErrorCheckHttpStatus(error, router);
   }
@@ -142,11 +141,7 @@ const getArticleDetails = async (articleId) => {
 const fetchCategoryOptions = async () => {
   try {
     const response = await apiGet(urlPathArticleClasses, router);
-    console.log("fetch");
-    console.log(response.data);
     categoryOptions.value = response.data;
-    console.log("cate");
-    console.log(categoryOptions.value);
   } catch (error) {
     whenErrorCheckHttpStatus(error, router);
   }
@@ -180,13 +175,12 @@ const updateArticle = async () => {
   formData.append("articleTitle", article.value.articleTitle);
   formData.append("articleSummaryContent", article.value.articleSummaryContent);
   formData.append("articleContent", article.value.articleContent);
-  formData.append("articleImagePath", article.value.articleImagePath);
-  formData.append("articleThumbnailImagePath", article.value.articleThumbnailImagePath);
+  formData.append("articleOriginalImage", article.value.articleOriginalImage);
+  formData.append("articleThumbnailImage", article.value.articleThumbnailImage);
   formData.append("articleDate", article.value.articleDate);
   formData.append("articleClassId", article.value.articleClass.articleClassId);
 
   if (article.value.articleFile) {
-    console.log("articleFile");
     formData.append("articleFile", article.value.articleFile);
   }
 

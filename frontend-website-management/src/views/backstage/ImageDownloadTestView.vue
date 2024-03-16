@@ -18,7 +18,7 @@ onMounted(async () => {
       "http://localhost:8080/xiaoqingblog/api/v1/imageTest/download"
     );
     images.value = response.data; // 假设这个API返回一个图片信息数组
-    console.log(images.value)
+    (images.value)
   } catch (error) {
     console.error("加载图片错误：", error);
   }

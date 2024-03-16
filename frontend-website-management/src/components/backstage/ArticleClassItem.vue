@@ -51,7 +51,6 @@ const triggerEditArticleClass = () => {
         articleClassName: enteredValue,
       });
       try {
-        console.log(editArticleClass);
         const response = await apiUpdate(urlPath, editArticleClass.value, router);
         const httpStatus = response.status;
         if (httpStatus == 200) {
