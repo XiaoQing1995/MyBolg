@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.xiaoqing.blog.azureblob.AzureBlobService;
-import com.xiaoqing.blog.azureblob.IAzureBlobService;
+import com.xiaoqing.blog.model.azureblob.AzureBlobService;
+import com.xiaoqing.blog.model.azureblob.IAzureBlobService;
 
 import lombok.RequiredArgsConstructor;
 

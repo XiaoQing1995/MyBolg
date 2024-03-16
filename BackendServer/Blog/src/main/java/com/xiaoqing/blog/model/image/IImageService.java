@@ -1,4 +1,4 @@
-package com.xiaoqing.blog.image;
+package com.xiaoqing.blog.model.image;
 
 import java.io.IOException;
 

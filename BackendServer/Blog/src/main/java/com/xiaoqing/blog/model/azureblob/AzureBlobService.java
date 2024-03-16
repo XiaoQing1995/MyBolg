@@ -1,4 +1,4 @@
-package com.xiaoqing.blog.azureblob;
+package com.xiaoqing.blog.model.azureblob;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,8 +18,8 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobItem;
-import com.xiaoqing.blog.image.IImageService;
 import com.xiaoqing.blog.model.article.ArticleRepository;
+import com.xiaoqing.blog.model.image.IImageService;
 
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;

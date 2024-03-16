@@ -1,4 +1,4 @@
-package com.xiaoqing.blog.azureblob;
+package com.xiaoqing.blog.model.azureblob;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

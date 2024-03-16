@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xiaoqing.blog.azureblob.IAzureBlobService;
-import com.xiaoqing.blog.image.IImageService;
 import com.xiaoqing.blog.model.articleclass.ArticleClass;
+import com.xiaoqing.blog.model.azureblob.IAzureBlobService;
+import com.xiaoqing.blog.model.image.IImageService;
 
 import lombok.RequiredArgsConstructor;
 
