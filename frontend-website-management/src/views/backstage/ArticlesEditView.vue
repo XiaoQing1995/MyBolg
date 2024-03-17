@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-4">
     <h2>Edit Article</h2>
-    <form @submit.prevent="updateArticle">
+    <form @submit.prevent>
       <!-- 文章標題 -->
       <div class="mb-3">
         <label for="title" class="form-label">標題</label>

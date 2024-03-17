@@ -72,7 +72,7 @@ const triggerEditArticleClass = () => {
 const deleteArticleClass = () => {
   Swal.fire({
     title: "刪除?",
-    text: "確定要刪除這篇文章嗎?",
+    text: `確定要刪除${props.articleClass.articleClassName}嗎?`,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",

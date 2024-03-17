@@ -118,7 +118,7 @@ const updateAccountRole = async () => {
 const deleteAccount = async () => {
   Swal.fire({
     title: "刪除?",
-    text: "確定要刪除這個帳戶嗎?",
+    text: `確定要刪除${props.account.accountNumber}嗎?`,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",

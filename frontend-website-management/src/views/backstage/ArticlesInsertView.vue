@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-4">
-    <h2>Edit Article</h2>
-    <form @submit.prevent="insertArticle">
+    <h2>Insert Article</h2>
+    <form @submit.prevent>
       <!-- 文章標題 -->
       <div class="mb-3">
         <label for="title" class="form-label">標題</label>
@@ -80,10 +80,10 @@
 
       <!-- 操作按鈕，取消和儲存 -->
       <div class="text-center">
-        <button type="button" class="btn btn-secondary me-2" @click="resetArticles">
+        <button type="button" class="btn btn-secondary me-2" @click="resetArticle">
           重置
         </button>
-        <button type="submit" class="btn btn-primary" @click="insertArticles">
+        <button type="submit" class="btn btn-primary" @click="insertArticle">
           儲存
         </button>
       </div>
@@ -138,7 +138,7 @@ const handleImageUpload = (event) => {
   }
 };
 
-const insertArticles = async () => {
+const insertArticle = async () => {
   if (!validateArticle()) {
     return;
   }
@@ -174,7 +174,7 @@ const insertArticles = async () => {
   }
 };
 
-const resetArticles = () => {
+const resetArticle = () => {
   article.value = {
     articleTitle: "",
     articleContent: "",

@@ -18,7 +18,7 @@ public class AzureBlobConfig {
 	private String containerName;
 
 	@Bean
-	BlobServiceClient clobServiceClient() {
+	BlobServiceClient blobServiceClient() {
 
 		BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString)
 				.buildClient();
@@ -30,7 +30,7 @@ public class AzureBlobConfig {
 	@Bean
 	BlobContainerClient blobContainerClient() {
 
-		BlobContainerClient blobContainerClient = clobServiceClient().getBlobContainerClient(containerName);
+		BlobContainerClient blobContainerClient = blobServiceClient().getBlobContainerClient(containerName);
 
 		return blobContainerClient;
 
