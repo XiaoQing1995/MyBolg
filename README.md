@@ -45,6 +45,6 @@
 ![image](https://github.com/XiaoQing1995/MyBolg/assets/133472373/f54728f2-d7cf-49d7-b797-29f95c046432)
 
 - **前端部分**：在前端的最上層資料夾新增 .env 檔案，並將下圖相關屬性定義好即可
-- ![image](https://github.com/XiaoQing1995/MyBolg/assets/133472373/73b350a1-5018-4463-af0e-796aa1a819c9)
+  ![image](https://github.com/XiaoQing1995/MyBolg/assets/133472373/73b350a1-5018-4463-af0e-796aa1a819c9)
 
 
