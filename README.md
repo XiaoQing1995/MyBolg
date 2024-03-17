@@ -6,7 +6,7 @@
 ## 功能概述
 - 學習記錄：我可以添加、編輯和刪除學習記錄，包括學習的主題、內容、日期等信息。
 - 分類功能：可以透過分類瀏覽該分類的所有學習紀錄。
-- 帳戶管理：主要分為 User 及 Admin 兩種帳戶，User 主要負責文章的相關功能，而 Admin 除了文章的相關功能還可以修改帳戶的資料，包括修改密碼、用戶權限。
+- 帳戶管理：主要分為 USER 及 ADMIN 兩種帳戶，User 主要負責文章的相關功能，而 ADMIN 除了文章的相關功能還可以修改帳戶的資料，包括修改密碼、用戶權限。
 - 身份認證：透過 Spring Security 及 JWT 實作身份認證及授權機制。
 
 ## 使用技術
@@ -38,3 +38,13 @@
 - **Azure SQL Server**：使用 Azure SQL Server 來存儲和管理應用數據。這是一種關聯式資料庫服務，提供了 SQL Server 的功能和特性，同時也獲得了雲計算的好處，如可擴展性、可用性和安全性。
 - **Azure Spring Apps**：後端應用程式採用 Spring Boot 開發，並部署在 Azure Spring Apps 服務上。這是一個完全管理的 Spring Cloud 環境，支持 Java 微服務架構的快速開發和部署。
 - **Azure Blob Storage**：用於存儲和管理應用程式的非結構化數據（如圖片、文件等）。Azure Blob Storage 提供了高度可擴展的對象存儲解決方案，並支持全球訪問和大數據工作負載。
+
+
+## 本地端佈署方式
+- **後端部分**：在 src/main/resource 新增 application.properties 檔案，並將下圖相關屬性定義好，再到 Controller 將 @CrossOrigin 改為可訪問的網域即可，
+![image](https://github.com/XiaoQing1995/MyBolg/assets/133472373/f54728f2-d7cf-49d7-b797-29f95c046432)
+
+- **前端部分**：在前端的最上層資料夾新增 .env 檔案，並將下圖相關屬性定義好即可
+- ![image](https://github.com/XiaoQing1995/MyBolg/assets/133472373/73b350a1-5018-4463-af0e-796aa1a819c9)
+
+
