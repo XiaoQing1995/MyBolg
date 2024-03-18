@@ -55,14 +55,14 @@
       <div class="mb-3">
         <label for="content" class="form-label">文章內容</label>
         <Editor
-          api-key="ovyy5uubb3bz95whlsxmd1vvnnhsz98viov27xsvgwp41jzg"
+          :api-key="tinyApiKey"
           v-model="article.articleContent"
           :init="{
             height: '50vh', // 預設高度
             autoresize_bottom_margin: 20, // 設定底部邊距
             toolbar_mode: 'sliding',
             plugins:
-              'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist image a11ychecker',
+              'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount image',
             tinycomments_mode: 'embedded',
             tinycomments_author: 'Author name',
             a11y_file_allowed_types: 'image/*',
@@ -83,21 +83,19 @@
         <button type="button" class="btn btn-secondary me-2" @click="resetArticle">
           重置
         </button>
-        <button type="submit" class="btn btn-primary" @click="insertArticle">
-          儲存
-        </button>
+        <button type="submit" class="btn btn-primary" @click="insertArticle">儲存</button>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from "vue";
 import { apiGet, apiPost } from "@/api/api";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import Editor from "@tinymce/tinymce-vue";
-
+const tinyApiKey = inject('tinyApiKey');
 const router = useRouter();
 
 const urlPathArticle = "/v1/articles";
@@ -188,17 +186,19 @@ const resetArticle = () => {
   }
 };
 
-
 onMounted(async () => {
   await fetchCategoryOptions();
+  
 });
 
 const validateArticle = () => {
-  if (!article.value.articleTitle.trim() || 
-  !article.value.articleSummaryContent.trim() ||
-  !article.value.articleContent.trim() || 
-  !article.value.articleClassId|| 
-  !article.value.articleFile) {
+  if (
+    !article.value.articleTitle.trim() ||
+    !article.value.articleSummaryContent.trim() ||
+    !article.value.articleContent.trim() ||
+    !article.value.articleClassId ||
+    !article.value.articleFile
+  ) {
     Swal.fire("錯誤", "請填寫所有欄位", "error");
     return false;
   }
