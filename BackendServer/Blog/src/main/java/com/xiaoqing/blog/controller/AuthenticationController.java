@@ -1,5 +1,6 @@
 package com.xiaoqing.blog.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,10 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin( origins = {"https://happy-meadow-001df7a00.5.azurestaticapps.net","https://xiaoqing.website/"} )
-//@CrossOrigin("http://localhost:5173")
 public class AuthenticationController {
-
+	
 	private final AuthenticationService service;
 	
 //	@PostMapping("/register")

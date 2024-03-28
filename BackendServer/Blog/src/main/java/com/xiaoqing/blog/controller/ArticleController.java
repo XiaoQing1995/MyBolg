@@ -1,5 +1,6 @@
 package com.xiaoqing.blog.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,10 +28,9 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/articles")
-@CrossOrigin( origins = {"https://happy-meadow-001df7a00.5.azurestaticapps.net","https://xiaoqing.website/"} )
-//@CrossOrigin("http://localhost:5173")
 public class ArticleController {
 
+	
 	private final IArticleService articleService;
 
 	@PostMapping

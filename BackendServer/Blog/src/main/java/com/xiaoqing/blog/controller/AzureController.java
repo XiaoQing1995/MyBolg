@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/files")
 @RequiredArgsConstructor
 public class AzureController {
-
 	private final IAzureBlobService azureBlobAdapter;
 
 	@PostMapping

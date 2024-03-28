@@ -2,6 +2,7 @@ package com.xiaoqing.blog.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/roles")
-@CrossOrigin( origins = {"https://happy-meadow-001df7a00.5.azurestaticapps.net","https://xiaoqing.website/"} )
-//@CrossOrigin("http://localhost:5173")
 public class RoleController {
-
+	
 	private final IRoleService roleService;
 
 	@GetMapping
